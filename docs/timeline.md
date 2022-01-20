@@ -1,32 +1,87 @@
-# Session 1
+# Session 1 : Principles of Software Design
 
-## Lesson 1.1
+## Lesson 1.1 : YAGNI, KISS, DRY
 
-## Lesson 1.2
+- Bookings service
 
-## Lesson 1.3
+- Minimalist
 
-# Session 2
+- Clean code
 
-## Lesson 2.1
+## Lesson 1.2 : Obstacles of change
 
-## Lesson 2.2
+- Reduce afferent (dependents) and efferent (dependencies) coupling
 
-## Lesson 2.3
+- Reduce calls Tell Don`t Ask
 
-# Session 3
+- Reduce knowledge Demeter Law
 
-## Lesson 3.1
+## Lesson 1.3 : Data-Driven Design
 
-## Lesson 3.2
+- Primitive obsession
 
-## Lesson 3.3
+- Command-Query separation
 
-# Session 4
+# Session 2 : SOLID Principles
 
-## Lesson 4.1
+## Lesson 2.1 : Single Responsibility Principle
 
-## Lesson 4.2
+- One class responsible for one thing
 
-## Lesson 4.3
+## Lesson 2.2 : OLI principles
 
+- Open for extension, closed for modification
+
+- Liskov substitution principle
+
+- Interface segregation principle
+
+## Lesson 2.3 : Dependency Inversion Principle
+
+- High level modules should not depend on low level modules
+
+# Session 3 : Design Patterns
+
+## Lesson 3.1 : Creational Patterns
+
+- Factory
+
+- Builder
+
+- Singleton
+
+## Lesson 3.2 : Structural Patterns
+
+- Adapter
+
+- Facade
+
+## Lesson 3.3 : Behavioral Patterns
+
+- Strategy
+
+- Command
+
+# Session 4 : Software Architecture
+
+## Lesson 4.1 : Layered Architecture
+
+- Application
+
+- Domain
+
+- Infrastructure
+
+## Lesson 4.2 : Domain Driven Design
+
+- Domain is king
+
+- Ports to abstraction
+
+- Adapters to implementation
+
+## Lesson 4.3 : CQRS Architecture
+
+- Command flow
+
+- Query flow
