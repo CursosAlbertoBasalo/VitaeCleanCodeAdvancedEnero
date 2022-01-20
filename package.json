@@ -1,6 +1,6 @@
 {
   "name": "clean-code_advanced",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Design Patterns and Software Architecture",
   "author": {
     "name": "Alberto Basalo",
@@ -26,7 +26,9 @@
     "format": "prettier --write \"./**/*.{ts,json}\"",
     "lint": "eslint src --ext .ts",
     "lint:fix": "npm run lint -- --fix",
-    "update": "ncu -u"
+    "update": "ncu -u",
+    "prerelease": "standard-version ",
+    "release": "git push --follow-tags origin main"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
