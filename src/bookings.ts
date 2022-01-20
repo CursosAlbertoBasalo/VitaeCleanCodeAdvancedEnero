@@ -1,17 +1,12 @@
+import { Booking } from "./booking";
+
 export class Bookings {
-  public solicite() {
+  public solicite(booking: Booking): Booking {
+    console.log(booking);
     return undefined;
   }
-  public verifyAvailability() {
-    return undefined;
-  }
-  public pay() {
-    return undefined;
-  }
-  public reserve() {
-    return undefined;
-  }
-  public confirm() {
+  public annulate(bookingId: string) {
+    console.log(bookingId);
     return undefined;
   }
 }

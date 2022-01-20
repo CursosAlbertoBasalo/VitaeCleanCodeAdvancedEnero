@@ -72,13 +72,14 @@
       }
     ],
     "no-nested-ternary": "warn",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "prettier/prettier": [
       "error",
       {
         "endOfLine": "auto"
       }
     ],
+    "@typescript-eslint/no-unused-vars": "warn",
     "jest/no-hooks": "off",
     "jest/prefer-expect-assertions": "off",
     "jest/no-disabled-tests": "warn",
