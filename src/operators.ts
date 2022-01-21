@@ -26,7 +26,7 @@ export class Operators {
     const options = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": this.operatorId === "SpaceY" ? "application/json" : "text/json",
       },
       body: this.operatorId === "SpaceY" ? body : JSON.stringify(body),
     };
@@ -58,7 +58,7 @@ export class Operators {
     const options = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": this.operatorId === "SpaceY" ? "application/json" : "text/json",
       },
       body: this.operatorId === "SpaceY" ? body : JSON.stringify(body),
     };
@@ -88,7 +88,7 @@ export class Operators {
     const options = {
       method: this.operatorId === "SpaceY" ? "DELETE" : "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": this.operatorId === "SpaceY" ? "application/json" : "text/json",
       },
       body: this.operatorId === "SpaceY" ? body : JSON.stringify(body),
     };

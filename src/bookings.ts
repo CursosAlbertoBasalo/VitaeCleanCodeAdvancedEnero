@@ -26,9 +26,9 @@ export class Bookings {
     cardCVC: string
   ): Booking {
     this.create(travelerId, tripId, passengersCount);
-    this.pay(cardNumber, cardExpiry, cardCVC);
+    const payment = this.pay(cardNumber, cardExpiry, cardCVC);
     this.reserve();
-    this.confirm();
+    this.confirm(payment);
     return this.booking;
   }
 
@@ -72,7 +72,7 @@ export class Bookings {
       throw new Error("The trip is not available");
     }
   }
-  private pay(cardNumber: string, cardExpiry: string, cardCVC: string) {
+  private pay(cardNumber: string, cardExpiry: string, cardCVC: string): Payment {
     this.booking.price = this.calculatePrice();
     const payments = new Payments();
     const payment = payments.payBooking(
@@ -89,6 +89,7 @@ export class Bookings {
     this.booking.paymentId = payment.id;
     this.booking.status = BookingStatus.PAID;
     DB.update(this.booking);
+    return payment;
   }
   private calculatePrice(): number {
     // eslint-disable-next-line no-magic-numbers
@@ -105,9 +106,9 @@ export class Bookings {
     this.booking.status = BookingStatus.RESERVED;
     DB.update(this.booking);
   }
-  private confirm() {
+  private confirm(payment: Payment) {
     this.notifications = new Notifications();
-    this.notifications.send(this.traveler, this.booking);
+    this.notifications.send(this.traveler, this.booking, payment);
     this.booking.status = BookingStatus.CONFIRMED;
     DB.update(this.booking);
   }

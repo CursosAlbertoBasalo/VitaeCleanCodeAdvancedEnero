@@ -23,13 +23,13 @@ export class Payments {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+        body: {
           operation: PaymentKinds[payment.kind],
           amount,
           cardNumber,
           cardExpiry,
           cardCVC,
-        }),
+        },
       };
       const response = HTTP.request(this.paymentAPIUrl, options);
       payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
@@ -56,13 +56,13 @@ export class Payments {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+        body: {
           operation: PaymentKinds[payment.kind],
           amount,
           cardNumber,
           cardExpiry,
           cardCVC,
-        }),
+        },
       };
       const response = HTTP.request(this.paymentAPIUrl, options);
       payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
