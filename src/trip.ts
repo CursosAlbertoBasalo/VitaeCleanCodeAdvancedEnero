@@ -5,6 +5,13 @@ export enum TripKinds {
   WITH_STAY,
 }
 
+export enum TripStatus {
+  WAITING,
+  CANCELLED,
+  CONFIRMED,
+  NOTIFIED,
+}
+
 export class Trip {
   id = "";
   operatorId: string;
@@ -15,6 +22,7 @@ export class Trip {
   flightPrice: number;
   stayingNightPrice: number;
   kind: TripKinds = TripKinds.WITH_STAY;
+  status: TripStatus = TripStatus.WAITING;
 
   constructor(
     operatorId: string,

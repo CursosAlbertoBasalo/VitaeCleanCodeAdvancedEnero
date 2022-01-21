@@ -39,9 +39,18 @@ export class Bookings {
     }
     this.booking.status = BookingStatus.ANNULLED;
     DB.update(this.booking);
-    this.refund();
+    const payment = this.refund();
     this.release();
+    this.confirm(payment);
     return this.booking;
+  }
+
+  public cancel(booking: Booking) {
+    this.booking = booking;
+    this.booking.status = BookingStatus.CANCELLED;
+    DB.update<Booking>(this.booking);
+    const payment = this.refund();
+    this.notify(payment);
   }
 
   private create(travelerId: string, tripId: string, passengersCount: number) {
@@ -112,6 +121,12 @@ export class Bookings {
     this.booking.status = BookingStatus.CONFIRMED;
     DB.update(this.booking);
   }
+  private notify(payment: Payment) {
+    this.notifications = new Notifications();
+    this.notifications.send(this.traveler, this.booking, payment);
+    this.booking.status = BookingStatus.NOTIFIED;
+    DB.update(this.booking);
+  }
   private refund() {
     const payments = new Payments();
     const chargedPayment = DB.select<Payment>(`SELECT * FROM payments WHERE id = '${this.booking.paymentId}'`);
@@ -126,6 +141,7 @@ export class Bookings {
     this.booking.refundId = refundPayment.id;
     this.booking.status = BookingStatus.REFUNDED;
     DB.update(this.booking);
+    return refundPayment;
   }
   private release() {
     this.operators.releaseBooking(this.booking);
