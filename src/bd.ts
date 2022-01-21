@@ -1,13 +1,13 @@
 export class DB {
-  public static select(query: string): unknown {
+  public static select<T>(query: string): T {
     console.log(query);
     return undefined;
   }
-  public static insert(dao: unknown): string {
+  public static insert<T>(dao: T): string {
     console.log(dao);
     return Date.now().toString();
   }
-  public static update(dao: unknown): number {
+  public static update<T>(dao: T): number {
     console.log(dao);
     return 1;
   }

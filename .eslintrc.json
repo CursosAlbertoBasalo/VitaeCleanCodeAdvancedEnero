@@ -26,6 +26,10 @@
         "max": 10
       }
     ],
+    "curly": [
+      "warn",
+      "all"
+    ],
     "max-depth": [
       "warn",
       2
