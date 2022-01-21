@@ -2,10 +2,11 @@
 import { Booking, BookingStatus } from "./booking";
 import { HTTP } from "./http";
 import { Payment } from "./payment";
+import { SMTP } from "./smtp";
 import { Traveler } from "./traveler";
 
 export class Notifications {
-  private emailUrl = "https://mailmonk.com/v1/send";
+  private config = "http";
 
   public send(traveler: Traveler, booking: Booking, payment: Payment): void {
     const emailComposer = new EmailComposer(traveler, booking, payment);
@@ -22,10 +23,15 @@ export class Notifications {
         break;
     }
     const body = emailComposer.getSalutation() + emailComposer.getMainBody() + emailComposer.getSignature();
-    this.sendEmail(traveler.email, subject, body);
+    if (this.config === "http") {
+      this.sendEmailByHttp(traveler.email, subject, body);
+    } else {
+      this.sendEmailBySmtp(traveler.email, subject, body);
+    }
   }
 
-  private sendEmail(recipient: string, subject: string, body: string): unknown {
+  private sendEmailByHttp(recipient: string, subject: string, body: string): unknown {
+    const emailUrl = "https://mailmonk.com/v1/send";
     const options = {
       method: "POST",
       headers: {
@@ -37,7 +43,20 @@ export class Notifications {
         body,
       },
     };
-    return HTTP.request(this.emailUrl, options);
+
+    return HTTP.request(emailUrl, options);
+  }
+  private sendEmailBySmtp(recipient: string, subject: string, body: string): unknown {
+    const smtpServer = "smtp.astrobookings.com";
+    const smtpPort = 25;
+    const smtpUser = "Traveler assistant";
+    const smtpPassword = "astrobookings";
+    return new SMTP(smtpServer, smtpPort, smtpUser, smtpPassword).sendMail(
+      `"AstroBookings" <${smtpUser}>`,
+      recipient,
+      subject,
+      body
+    );
   }
 }
 
