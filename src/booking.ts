@@ -19,8 +19,8 @@ export class Booking {
   passengersCount: number;
   status: BookingStatus = BookingStatus.SOLICITED;
   price: number;
-  paymentId: string;
   operatorReserveCode: string;
+  paymentId: string;
   refundId: string;
   constructor(tripId: string, travelerId: string, passengersCount: number) {
     this.tripId = tripId;

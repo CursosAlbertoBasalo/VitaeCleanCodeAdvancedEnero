@@ -18,8 +18,8 @@ export class Payment {
   amount: number;
   concept: string;
   date: Date;
-  kind: PaymentKinds;
-  status: PaymentStatus;
+  kind: PaymentKinds = PaymentKinds.CHARGE;
+  status: PaymentStatus = PaymentStatus.PENDING;
   gatewayCode: string;
   constructor(cardNumber: string, cardExpiry: string, cardCVC: string, amount: number, concept: string) {
     this.cardNumber = cardNumber;

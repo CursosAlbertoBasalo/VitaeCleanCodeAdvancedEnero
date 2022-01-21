@@ -1,10 +1,11 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable max-lines */
 /* eslint-disable max-params */
 import { DB } from "./bd";
 import { Booking, BookingStatus } from "./booking";
 import { Notifications } from "./notifications";
 import { Operators } from "./operators";
-import { Payment } from "./payment";
+import { Payment, PaymentStatus } from "./payment";
 import { Payments } from "./payments";
 import { Traveler } from "./traveler";
 import { Trip } from "./trip";
@@ -82,6 +83,9 @@ export class Bookings {
       this.booking.price,
       JSON.stringify(this.booking)
     );
+    if (payment.status === PaymentStatus.REFUSED) {
+      throw new Error("The payment was refused");
+    }
     this.booking.paymentId = payment.id;
     this.booking.status = BookingStatus.PAID;
     DB.update(this.booking);
