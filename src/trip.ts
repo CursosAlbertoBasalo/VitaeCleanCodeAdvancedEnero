@@ -8,6 +8,7 @@ export enum TripKinds {
 export class Trip {
   id = "";
   operatorId: string;
+  operatorTripCode: string;
   destination: string;
   startDate: Date;
   endDate: Date;

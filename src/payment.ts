@@ -20,7 +20,7 @@ export class Payment {
   date: Date;
   kind: PaymentKinds;
   status: PaymentStatus;
-  gatewayId: string;
+  gatewayCode: string;
   constructor(cardNumber: string, cardExpiry: string, cardCVC: string, amount: number, concept: string) {
     this.cardNumber = cardNumber;
     this.cardExpiry = cardExpiry;

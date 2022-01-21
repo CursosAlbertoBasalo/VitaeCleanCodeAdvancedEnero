@@ -66,7 +66,7 @@ export class Bookings {
     }
   }
   private checkAvailability(passengersCount: number) {
-    const isAvailable = this.operators.verifyAvailability(this.trip.id, passengersCount);
+    const isAvailable = this.operators.verifyAvailability(this.trip, passengersCount);
     if (!isAvailable) {
       throw new Error("The trip is not available");
     }
@@ -97,7 +97,7 @@ export class Bookings {
     return totalPrice;
   }
   private reserve() {
-    this.booking.reserveId = this.operators.reserveBooking(this.booking);
+    this.booking.operatorReserveCode = this.operators.reserveBooking(this.booking, this.trip);
     this.booking.status = BookingStatus.RESERVED;
     DB.update(this.booking);
   }
