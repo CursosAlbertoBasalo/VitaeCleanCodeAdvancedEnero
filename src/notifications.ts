@@ -7,7 +7,6 @@ export class Notifications {
   private emailUrl = "https://mailmonk.com/v1/send";
 
   public send(traveler: Traveler, booking: Booking, payment: Payment): void {
-    console.log(traveler, booking, payment);
     const subject = `Booking ${booking.id} for ${booking.passengersCount} passengers`;
     const emailComposer = new EmailComposer(booking, payment);
     const body = emailComposer.getSalutation() + emailComposer.getMainBody() + emailComposer.getSignature();

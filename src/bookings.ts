@@ -28,7 +28,7 @@ export class Bookings {
     this.create(travelerId, tripId, passengersCount);
     const payment = this.pay(cardNumber, cardExpiry, cardCVC);
     this.reserve();
-    this.confirm(payment);
+    this.notify(payment);
     return this.booking;
   }
 
@@ -41,7 +41,7 @@ export class Bookings {
     DB.update(this.booking);
     const payment = this.refund();
     this.release();
-    this.confirm(payment);
+    this.notify(payment);
     return this.booking;
   }
 
@@ -115,16 +115,23 @@ export class Bookings {
     this.booking.status = BookingStatus.RESERVED;
     DB.update(this.booking);
   }
-  private confirm(payment: Payment) {
-    this.notifications = new Notifications();
-    this.notifications.send(this.traveler, this.booking, payment);
-    this.booking.status = BookingStatus.CONFIRMED;
-    DB.update(this.booking);
-  }
   private notify(payment: Payment) {
     this.notifications = new Notifications();
-    this.notifications.send(this.traveler, this.booking, payment);
-    this.booking.status = BookingStatus.NOTIFIED;
+    // To Do: pass notification type to the send method
+    switch (this.booking.status) {
+      case BookingStatus.RESERVED:
+        this.notifications.send(this.traveler, this.booking, payment);
+        this.booking.status = BookingStatus.RESERVATION_NOTIFIED;
+        break;
+      case BookingStatus.RELEASED:
+        this.notifications.send(this.traveler, this.booking, payment);
+        this.booking.status = BookingStatus.ANNULATION_NOTIFIED;
+        break;
+      case BookingStatus.CANCELLED:
+        this.notifications.send(this.traveler, this.booking, payment);
+        this.booking.status = BookingStatus.CANCELLATION_NOTIFIED;
+        break;
+    }
     DB.update(this.booking);
   }
   private refund() {
