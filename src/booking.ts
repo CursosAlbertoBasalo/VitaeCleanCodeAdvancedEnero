@@ -4,7 +4,7 @@ export enum BookingStatus {
   SOLICITED,
   PAID,
   RESERVED,
-  RESERVATION_NOTIFIED,
+  BOOKING_NOTIFIED,
   ANNULLED,
   REFUNDED,
   RELEASED,
@@ -20,6 +20,8 @@ export class Booking {
   passengersCount: number;
   status: BookingStatus = BookingStatus.SOLICITED;
   price: number;
+  hasPremiumFoods = false;
+  extraLuggageKilos = 0;
   operatorReserveCode: string;
   paymentId: string;
   refundId: string;

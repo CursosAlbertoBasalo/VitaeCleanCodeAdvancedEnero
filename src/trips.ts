@@ -16,23 +16,24 @@ export class Trips {
     startDate: Date,
     endDate: Date,
     flightPrice: number,
-    stayingNightPrice = 0
+    stayingNightPrice = 0,
+    extraLuggageKilosPrice = 0,
+    premiumFoodPrice = 0
   ): Trip {
-    if (startDate > endDate) {
-      throw new Error("The start date must be before the end date");
-    }
-    if (flightPrice <= 0) {
-      throw new Error("The flight price must be greater than zero");
-    }
+    this.guardTripParams(startDate, endDate, flightPrice);
     const trip = new Trip(operatorId, destination, startDate, endDate, flightPrice, stayingNightPrice);
     if (stayingNightPrice > 0) {
       trip.kind = TripKinds.WITH_STAY;
+      trip.extraLuggageKiloPrice = extraLuggageKilosPrice;
+    } else {
+      trip.kind = TripKinds.TRIP_ONLY;
+      trip.premiumFoodPrice = premiumFoodPrice;
     }
     trip.id = DB.insert<Trip>(trip);
     return trip;
   }
+
   public cancelTrip(operatorId: string, tripId: string): void {
-    console.log(operatorId, tripId);
     const trip = DB.select<Trip>(`SELECT * FROM trips WHERE id = '${tripId}'`);
     if (trip.operatorId !== operatorId) {
       throw new Error("You can't cancel a trip that is not yours");
@@ -41,6 +42,16 @@ export class Trips {
     DB.update<Trip>(trip);
     this.cancelBookings(tripId);
   }
+
+  private guardTripParams(startDate: Date, endDate: Date, flightPrice: number) {
+    if (startDate > endDate) {
+      throw new Error("The start date must be before the end date");
+    }
+    if (flightPrice <= 0) {
+      throw new Error("The flight price must be greater than zero");
+    }
+  }
+
   private cancelBookings(tripId: string) {
     const bookings = DB.select<Booking[]>(`SELECT * FROM bookings WHERE tripId = '${tripId}'`);
     bookings.forEach(booking => {

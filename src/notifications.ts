@@ -1,4 +1,5 @@
-import { Booking } from "./booking";
+/* eslint-disable max-lines-per-function */
+import { Booking, BookingStatus } from "./booking";
 import { HTTP } from "./http";
 import { Payment } from "./payment";
 import { Traveler } from "./traveler";
@@ -7,8 +8,19 @@ export class Notifications {
   private emailUrl = "https://mailmonk.com/v1/send";
 
   public send(traveler: Traveler, booking: Booking, payment: Payment): void {
-    const subject = `Booking ${booking.id} for ${booking.passengersCount} passengers`;
-    const emailComposer = new EmailComposer(booking, payment);
+    const emailComposer = new EmailComposer(traveler, booking, payment);
+    let subject = "";
+    switch (booking.status) {
+      case BookingStatus.RESERVED:
+        subject = `Booking ${booking.id} reserved for ${booking.passengersCount} passengers`;
+        break;
+      case BookingStatus.RELEASED:
+        subject = `Booking ${booking.id} released for ${booking.passengersCount} passengers`;
+        break;
+      case BookingStatus.CANCELLED:
+        subject = `Trip corresponding to booking ${booking.id} was cancelled `;
+        break;
+    }
     const body = emailComposer.getSalutation() + emailComposer.getMainBody() + emailComposer.getSignature();
     this.sendEmail(traveler.email, subject, body);
   }
@@ -32,10 +44,35 @@ export class Notifications {
 class EmailComposer {
   private newLine = "\n";
 
-  public constructor(private booking: Booking, private payment: Payment) {}
+  public constructor(private traveler: Traveler, private booking: Booking, private payment: Payment) {}
 
   public getSalutation(): string {
-    return "Dear " + this.booking.travelerId + "," + this.newLine + this.newLine;
+    switch (this.booking.status) {
+      case BookingStatus.RESERVED:
+        return (
+          "Dear " +
+          this.traveler.name +
+          this.newLine +
+          "we are happy to confirm you that your trip booking was reserved" +
+          this.newLine
+        );
+      case BookingStatus.RELEASED:
+        return (
+          "Dear " +
+          this.booking.travelerId +
+          this.newLine +
+          "as yous have requested, your trip booking was annulled" +
+          this.newLine
+        );
+      case BookingStatus.CANCELLED:
+        return (
+          "Dear " +
+          this.booking.travelerId +
+          this.newLine +
+          "we are sorry to inform you that your trip was cancelled" +
+          this.newLine
+        );
+    }
   }
   public getMainBody(): string {
     return JSON.stringify(this.booking) + this.newLine + JSON.stringify(this.payment);
