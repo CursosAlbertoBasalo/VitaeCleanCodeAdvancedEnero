@@ -1,9 +1,9 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-params */
-import { DB } from "./bd";
-import { HTTP } from "./http";
-import { Payment, PaymentKinds, PaymentStatus } from "./payment";
+import { Payment, PaymentKinds, PaymentStatus } from "../models/payment";
+import { DB } from "../tools/bd";
+import { HTTP } from "../tools/http";
 
 export class Payments {
   private paymentAPIUrl = "https://pay-me.com/v1/payments";

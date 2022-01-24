@@ -2,14 +2,14 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-lines */
 /* eslint-disable max-params */
-import { DB } from "./bd";
-import { Booking, BookingStatus } from "./booking";
-import { Notifications } from "./notifications";
+import { Notifications } from "../logic/notifications";
+import { Payments } from "../logic/payments";
+import { Booking, BookingStatus } from "../models/booking";
+import { Payment, PaymentStatus } from "../models/payment";
+import { Traveler } from "../models/traveler";
+import { Trip } from "../models/trip";
+import { DB } from "../tools/bd";
 import { Operators } from "./operators";
-import { Payment, PaymentStatus } from "./payment";
-import { Payments } from "./payments";
-import { Traveler } from "./traveler";
-import { Trip } from "./trip";
 
 /**
  * Class for solicite, annulate or cancel bookings

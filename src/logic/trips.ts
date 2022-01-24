@@ -1,9 +1,9 @@
 /* eslint-disable max-params */
 /* eslint-disable max-lines-per-function */
-import { DB } from "./bd";
-import { Booking } from "./booking";
-import { Bookings } from "./bookings";
-import { Trip, TripKinds, TripStatus } from "./trip";
+import { Bookings } from "../api/bookings";
+import { Booking } from "../models/booking";
+import { Trip, TripKinds, TripStatus } from "../models/trip";
+import { DB } from "../tools/bd";
 
 /**
  * Class for offering or canceling trips

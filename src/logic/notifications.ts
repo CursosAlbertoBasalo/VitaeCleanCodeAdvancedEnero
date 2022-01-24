@@ -1,9 +1,9 @@
 /* eslint-disable max-lines-per-function */
-import { Booking, BookingStatus } from "./booking";
-import { HTTP } from "./http";
-import { Payment } from "./payment";
-import { SMTP } from "./smtp";
-import { Traveler } from "./traveler";
+import { Booking, BookingStatus } from "../models/booking";
+import { Payment } from "../models/payment";
+import { Traveler } from "../models/traveler";
+import { HTTP } from "../tools/http";
+import { SMTP } from "../tools/smtp";
 
 export class Notifications {
   private config = "http";

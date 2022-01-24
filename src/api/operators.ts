@@ -1,9 +1,9 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
-import { Booking } from "./booking";
-import { HTTP } from "./http";
-import { Trip } from "./trip";
+import { Booking } from "../models/booking";
+import { Trip } from "../models/trip";
+import { HTTP } from "../tools/http";
 
 export class Operators {
   private operatorAPIUrl: string;

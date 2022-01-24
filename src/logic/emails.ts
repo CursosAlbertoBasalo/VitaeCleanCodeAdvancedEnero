@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Booking } from "./booking";
-import { Payment } from "./payment";
-import { Traveler } from "./traveler";
+import { Booking } from "../models/booking";
+import { Payment } from "../models/payment";
+import { Traveler } from "../models/traveler";
 
 export class Emails {
   private newLine = "\n";
