@@ -11,13 +11,30 @@ import { Payments } from "./payments";
 import { Traveler } from "./traveler";
 import { Trip } from "./trip";
 
+/**
+ * Class for solicite, annulate or cancel bookings
+ * @public
+ */
 export class Bookings {
-  operators: Operators;
-  booking: Booking;
-  trip: Trip;
-  traveler: Traveler;
-  notifications: Notifications;
+  private operators: Operators;
+  private booking: Booking;
+  private trip: Trip;
+  private traveler: Traveler;
+  private notifications: Notifications;
 
+  /**
+   * Solicites a new booking
+   * @param {string} travelerId - the id of the traveler soliciting the booking
+   * @param {string} tripId - the id of the trip to book
+   * @param {number} passengersCount - the number of passengers to reserve
+   * @param {string} cardNumber - the card number to pay with
+   * @param {string} cardExpiry - the card expiry date
+   * @param {string} cardCVC - the card CVC
+   * @param {boolean} hasPremiumFoods - if the traveler has premium foods
+   * @param {number} extraLuggageKilos - the number of extra luggage kilos
+   * @returns {Booking} the new booking object
+   * @throws {Error} if the booking is not possible
+   * */
   public solicite(
     travelerId: string,
     tripId: string,
@@ -35,6 +52,13 @@ export class Bookings {
     this.notify(payment);
     return this.booking;
   }
+  /**
+   * Annulate an existing booking
+   * @param {string} travelerId - the id of the traveler who made the booking
+   * @param {string} bookingId - the id of the booking to annulate
+   * @returns the booking object annulled
+   * @throws {Error} if the booking annulation is not possible
+   */
   public annulate(travelerId: string, bookingId: string): Booking {
     this.validateAnnulation(bookingId, travelerId);
     this.saveAnnulation();
@@ -43,6 +67,12 @@ export class Bookings {
     this.notify(payment);
     return this.booking;
   }
+  /**
+   * Cancel a trip and its booking
+   * @param {Booking} booking - the booking object to cancel
+   * @returns the booking object cancelled
+   * @throws {Error} if the booking cancellation is not possible
+   * */
   public cancel(booking: Booking) {
     this.booking = booking;
     this.saveCancellation();
@@ -117,7 +147,7 @@ export class Bookings {
     const flightPrice = this.trip.flightPrice + (this.booking.hasPremiumFoods ? this.trip.premiumFoodPrice : 0);
     const pricePerPassenger = flightPrice + stayingPrice;
     const passengersPrice = pricePerPassenger * this.booking.passengersCount;
-    const extraLuggageKilosPrice = this.booking.extraLuggageKilos * this.trip.extraLuggageKiloPrice;
+    const extraLuggageKilosPrice = this.booking.extraLuggageKilos * this.trip.extraLuggagePricePerKilo;
     const totalPrice = passengersPrice + extraLuggageKilosPrice;
     return totalPrice;
   }

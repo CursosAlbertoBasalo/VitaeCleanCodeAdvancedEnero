@@ -23,7 +23,7 @@ export class Trip {
   stayingNightPrice: number;
   kind: TripKinds = TripKinds.WITH_STAY;
   status: TripStatus = TripStatus.WAITING;
-  extraLuggageKiloPrice: number;
+  extraLuggagePricePerKilo: number;
   premiumFoodPrice: number;
 
   constructor(
