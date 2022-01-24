@@ -12,21 +12,29 @@
 
 - Reduce afferent (dependents) and efferent (dependencies) coupling
 
-> `Payment`: 4 afferent dependants
+> `Payment`: 4 afferent dependents (not that many)
 
-> `Bookings` 8 efferent dependencies:
+> `Bookings`: 8 efferent dependencies:
 
 - Reduce calls Tell Don`t Ask
 
-
+> `Bookings.pay`: move to one method on `Payment`:
 
 - Reduce knowledge with Law of Demeter
+
+> `Bookings.notify`: don`t use emailComposer and.. TDA
 
 ## Lesson 1.3 : Data-Driven Design
 
 - Primitive obsession
 
+> `Trips.assertDateRange` and `Bookings.calculatePrice` : use a Range class with invariants and logic
+
 - Command-Query separation
+
+> `Payments.refundBooking`: is a command, not a query... related to TDA
+
+> 💬 Discussion: What about database Ids and create or post methods?
 
 # Session 2 : SOLID Principles
 

@@ -4,13 +4,13 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-params */
 import { Notifications } from "../logic/notifications";
+import { Operators } from "../logic/operators";
 import { Payments } from "../logic/payments";
 import { Booking, BookingStatus } from "../models/booking";
 import { Payment, PaymentStatus } from "../models/payment";
 import { Traveler } from "../models/traveler";
 import { Trip } from "../models/trip";
 import { DB } from "../tools/bd";
-import { Operators } from "./operators";
 
 /**
  * Class for solicite, annulate or cancel bookings
@@ -18,7 +18,8 @@ import { Operators } from "./operators";
  */
 export class Bookings {
   // 🚨 🤔 🤢
-  // ! 8 efferent dependencies
+  // ! 1.2
+  // 8 efferent dependencies
   // 🚨 🤔 🤢
 
   private operators: Operators;
@@ -127,7 +128,8 @@ export class Bookings {
   private pay(cardNumber: string, cardExpiry: string, cardCVC: string): Payment {
     this.booking.price = this.calculatePrice();
     // 🚨 🤔 🤢
-    // ! Tell don't ask
+    // ! 1.2
+    // Tell don't ask
     // 🚨 🤔 🤢
     const payments = new Payments();
     const payment = payments.createPayment(
@@ -156,6 +158,10 @@ export class Bookings {
   private calculatePrice(): number {
     // eslint-disable-next-line no-magic-numbers
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    // 🚨 🤔 🤢
+    // ! 1.3
+    // Primitive obsession
+    // 🚨 🤔 🤢
     const stayingMilliseconds = this.trip.endDate.getTime() - this.trip.startDate.getTime();
     const stayingNights = Math.round(stayingMilliseconds / millisecondsPerDay);
     const stayingPrice = stayingNights * this.trip.stayingNightPrice;
@@ -174,6 +180,7 @@ export class Bookings {
   private notify(payment: Payment) {
     this.notifications = new Notifications(this.traveler, this.booking, payment);
     // 🚨 🤔 🤢
+    // 1.2
     // ! Law of Demeter
     // 🚨 🤔 🤢
     const body =

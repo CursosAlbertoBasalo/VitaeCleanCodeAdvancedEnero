@@ -72,6 +72,10 @@ export class Payments {
       payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
       payment.gatewayCode = response.body["data"]["transaction_number"];
       DB.update(payment);
+      // 🚨 🤔 🤢
+      // ! 1.3
+      // Command-Query separation
+      // 🚨 🤔 🤢
       return payment;
     }
   }
