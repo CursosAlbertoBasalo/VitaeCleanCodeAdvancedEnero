@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-lines */
@@ -121,8 +122,11 @@ export class Bookings {
   }
   private pay(cardNumber: string, cardExpiry: string, cardCVC: string): Payment {
     this.booking.price = this.calculatePrice();
+    // 🚨
+    // ! Tell don't ask
+    // 🚨
     const payments = new Payments();
-    const payment = payments.payBooking(
+    const payment = payments.createPayment(
       "credit-card",
       cardNumber,
       cardExpiry,
@@ -130,6 +134,13 @@ export class Bookings {
       this.booking.price,
       JSON.stringify(this.booking)
     );
+    if (!payment) {
+      throw new Error("Create Payment failed");
+    }
+    const response = payments.payBooking(payment);
+    payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
+    payment.gatewayCode = response.body["data"]["transaction_number"];
+    payments.savePayment(payment);
     if (payment.status === PaymentStatus.REFUSED) {
       throw new Error("The payment was refused");
     }
