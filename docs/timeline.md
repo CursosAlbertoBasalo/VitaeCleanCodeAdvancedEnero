@@ -14,7 +14,7 @@
 
 - Reduce calls Tell Don`t Ask
 
-- Reduce knowledge Demeter Law
+- Reduce knowledge with Law of Demeter
 
 ## Lesson 1.3 : Data-Driven Design
 
