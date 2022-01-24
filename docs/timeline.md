@@ -12,7 +12,13 @@
 
 - Reduce afferent (dependents) and efferent (dependencies) coupling
 
+> `Payment`: 4 afferent dependants
+
+> `Bookings` 8 efferent dependencies:
+
 - Reduce calls Tell Don`t Ask
+
+
 
 - Reduce knowledge with Law of Demeter
 
