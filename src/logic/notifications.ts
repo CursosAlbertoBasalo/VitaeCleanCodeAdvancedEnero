@@ -8,26 +8,29 @@ import { EmailComposer } from "./email_composer";
 
 export class Notifications {
   private config = "http";
+  public emailComposer: EmailComposer;
 
-  public send(traveler: Traveler, booking: Booking, payment: Payment): void {
-    const emailComposer = new EmailComposer(traveler, booking, payment);
+  constructor(private traveler: Traveler, private booking: Booking, private payment: Payment) {
+    this.emailComposer = new EmailComposer(traveler, booking, payment);
+  }
+
+  public send(body: string): void {
     let subject = "";
-    switch (booking.status) {
+    switch (this.booking.status) {
       case BookingStatus.RESERVED:
-        subject = `Booking ${booking.id} reserved for ${booking.passengersCount} passengers`;
+        subject = `Booking ${this.booking.id} reserved for ${this.booking.passengersCount} passengers`;
         break;
       case BookingStatus.RELEASED:
-        subject = `Booking ${booking.id} released for ${booking.passengersCount} passengers`;
+        subject = `Booking ${this.booking.id} released for ${this.booking.passengersCount} passengers`;
         break;
       case BookingStatus.CANCELLED:
-        subject = `Trip corresponding to booking ${booking.id} was cancelled `;
+        subject = `Trip corresponding to booking ${this.booking.id} was cancelled `;
         break;
     }
-    const body = emailComposer.getSalutation() + emailComposer.getMainBody() + emailComposer.getSignature();
     if (this.config === "http") {
-      this.sendEmailByHttp(traveler.email, subject, body);
+      this.sendEmailByHttp(this.traveler.email, subject, body);
     } else {
-      this.sendEmailBySmtp(traveler.email, subject, body);
+      this.sendEmailBySmtp(this.traveler.email, subject, body);
     }
   }
 

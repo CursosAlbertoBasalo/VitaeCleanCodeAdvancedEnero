@@ -17,6 +17,10 @@ import { Operators } from "./operators";
  * @public
  */
 export class Bookings {
+  // 🚨 🤔 🤢
+  // ! 8 efferent dependencies
+  // 🚨 🤔 🤢
+
   private operators: Operators;
   private booking: Booking;
   private trip: Trip;
@@ -122,9 +126,9 @@ export class Bookings {
   }
   private pay(cardNumber: string, cardExpiry: string, cardCVC: string): Payment {
     this.booking.price = this.calculatePrice();
-    // 🚨
+    // 🚨 🤔 🤢
     // ! Tell don't ask
-    // 🚨
+    // 🚨 🤔 🤢
     const payments = new Payments();
     const payment = payments.createPayment(
       "credit-card",
@@ -168,8 +172,15 @@ export class Bookings {
     DB.update(this.booking);
   }
   private notify(payment: Payment) {
-    this.notifications = new Notifications();
-    this.notifications.send(this.traveler, this.booking, payment);
+    this.notifications = new Notifications(this.traveler, this.booking, payment);
+    // 🚨 🤔 🤢
+    // ! Law of Demeter
+    // 🚨 🤔 🤢
+    const body =
+      this.notifications.emailComposer.getSalutation() +
+      this.notifications.emailComposer.getMainBody() +
+      this.notifications.emailComposer.getSignature();
+    this.notifications.send(body);
     switch (this.booking.status) {
       case BookingStatus.RESERVED:
         this.booking.status = BookingStatus.BOOKING_NOTIFIED;
