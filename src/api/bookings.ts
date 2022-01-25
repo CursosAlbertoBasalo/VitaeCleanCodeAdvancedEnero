@@ -18,8 +18,8 @@ import { DB } from "../tools/bd";
  */
 export class Bookings {
   // 🚨 🤔 🤢
-  // ! 1.2
-  // 8 efferent dependencies
+  // ! 1.3.1
+  // ! 8 efferent dependencies
   // 🚨 🤔 🤢
 
   private operators: Operators;
@@ -129,7 +129,7 @@ export class Bookings {
     this.booking.price = this.calculatePrice();
     // 🚨 🤔 🤢
     // ! 1.2
-    // Tell don't ask
+    // ! Tell don't ask
     // 🚨 🤔 🤢
     const payments = new Payments();
     const payment = payments.createPayment(
@@ -159,8 +159,8 @@ export class Bookings {
     // eslint-disable-next-line no-magic-numbers
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
     // 🚨 🤔 🤢
-    // ! 1.3
-    // Primitive obsession
+    // ! 1.3.4
+    // ! Primitive obsession
     // 🚨 🤔 🤢
     const stayingMilliseconds = this.trip.endDate.getTime() - this.trip.startDate.getTime();
     const stayingNights = Math.round(stayingMilliseconds / millisecondsPerDay);
@@ -179,15 +179,7 @@ export class Bookings {
   }
   private notify(payment: Payment) {
     this.notifications = new Notifications(this.traveler, this.booking, payment);
-    // 🚨 🤔 🤢
-    // 1.2
-    // ! Law of Demeter
-    // 🚨 🤔 🤢
-    const body =
-      this.notifications.emailComposer.getSalutation() +
-      this.notifications.emailComposer.getMainBody() +
-      this.notifications.emailComposer.getSignature();
-    this.notifications.send(body);
+    this.notifications.send();
     switch (this.booking.status) {
       case BookingStatus.RESERVED:
         this.booking.status = BookingStatus.BOOKING_NOTIFIED;
@@ -210,6 +202,10 @@ export class Bookings {
   private refund() {
     const payments = new Payments();
     const chargedPayment = DB.select<Payment>(`SELECT * FROM payments WHERE id = '${this.booking.paymentId}'`);
+    // 🚨 🤔 🤢
+    // ! 1.3.7
+    // ! Command-Query segregation
+    // 🚨 🤔 🤢
     const refundPayment = payments.refundBooking(
       "credit-card",
       chargedPayment.cardNumber,

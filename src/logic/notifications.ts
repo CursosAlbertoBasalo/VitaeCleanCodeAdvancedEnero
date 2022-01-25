@@ -1,20 +1,28 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
 import { Booking, BookingStatus } from "../models/booking";
 import { Payment } from "../models/payment";
 import { Traveler } from "../models/traveler";
 import { HTTP } from "../tools/http";
 import { SMTP } from "../tools/smtp";
-import { EmailComposer } from "./email_composer";
-
+import { Emails } from "./emails";
 export class Notifications {
   private config = "http";
-  public emailComposer: EmailComposer;
+  private emailUrl = "https://mailmonk.com/v1/send";
+  private smtpServer = "smtp.astrobookings.com";
+  private smtpPort = 25;
+  private smtpUser = "Traveler assistant";
+  private smtpPassword = "astrobookings";
+  private emails: Emails;
+
+  public smtpSender = new SMTP(this.smtpServer, this.smtpPort, this.smtpUser, this.smtpPassword);
 
   constructor(private traveler: Traveler, private booking: Booking, private payment: Payment) {
-    this.emailComposer = new EmailComposer(traveler, booking, payment);
+    this.emails = new Emails(traveler, booking, payment);
   }
 
-  public send(body: string): void {
+  public send(): void {
+    const body = this.buildBody();
     let subject = "";
     switch (this.booking.status) {
       case BookingStatus.RESERVED:
@@ -34,8 +42,19 @@ export class Notifications {
     }
   }
 
+  private buildBody() {
+    // 🚨 🤔 🤢
+    // ! 1.3.2
+    // ! Feature envy
+    // 🚨 🤔 🤢
+    // 🚨 🤔 🤢
+    // ! 1.3.3
+    // ! Inappropriate intimacy
+    // 🚨 🤔 🤢
+    return this.emails.getSalutation() + this.emails.getMainBody() + this.emails.getSignature();
+  }
+
   private sendEmailByHttp(recipient: string, subject: string, body: string): unknown {
-    const emailUrl = "https://mailmonk.com/v1/send";
     const options = {
       method: "POST",
       headers: {
@@ -48,18 +67,9 @@ export class Notifications {
       },
     };
 
-    return HTTP.request(emailUrl, options);
+    return HTTP.request(this.emailUrl, options);
   }
   private sendEmailBySmtp(recipient: string, subject: string, body: string): unknown {
-    const smtpServer = "smtp.astrobookings.com";
-    const smtpPort = 25;
-    const smtpUser = "Traveler assistant";
-    const smtpPassword = "astrobookings";
-    return new SMTP(smtpServer, smtpPort, smtpUser, smtpPassword).sendMail(
-      `"AstroBookings" <${smtpUser}>`,
-      recipient,
-      subject,
-      body
-    );
+    return this.smtpSender.sendMail(`"AstroBookings" <${this.smtpUser}>`, recipient, subject, body);
   }
 }

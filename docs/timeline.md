@@ -6,37 +6,41 @@
 
 ## Lesson 1.3 : Metrics, preventers and facilitators
 
-- Reduce afferent (dependents) and efferent (dependencies) coupling
+### 1.3.1 Reduce afferent (dependents) and efferent (dependencies) coupling
 
 > `Payment`: 4 afferent dependents (not that many)
 
 > `Bookings`: 8 efferent dependencies:
 
-- Feature envy
+### 1.3.2 Feature envy
 
-> ?
+> `Notifications.buildBody()`: abuses emailComposer
 
-- Inappropriate intimacy
+### 1.3.3 Inappropriate intimacy
 
-> ?
+> `Notifications.buildBody()`: know how call (order...) the methods
 
-- Primitive obsession
+### 1.3.4 Primitive obsession
 
 > `Trips.assertDateRange` and `Bookings.calculatePrice` : use a Range class with invariants and logic
 
-- Reduce calls Tell Don`t Ask
+> 💡 Improvement: Create structures for method arguments
+
+### 1.3.5 Reduce calls Tell Don`t Ask
 
 > `Bookings.pay`: move to one method on `Payment`:
 
-- Reduce knowledge with Law of Demeter
+### 1.3.6 Reduce knowledge with Law of Demeter
 
-> `Bookings.notify`: don`t use emailComposer and.. TDA
+> `this.dependency.dependency.method()`: avoid multiple dot calls
 
-- Command-Query separation
+### 1.3.7 Command-Query segregation
 
 > `Payments.refundBooking`: is a command, not a query... related to TDA
 
 > 💬 Discussion: What about database Ids and create or post methods?
+
+---
 
 # Session 2 : SOLID Principles
 
@@ -55,6 +59,8 @@
 ## Lesson 2.3 : Dependency Inversion Principle
 
 - High level modules should not depend on low level modules
+
+---
 
 # Session 3 : Design Patterns
 
@@ -77,6 +83,8 @@
 - Strategy
 
 - Command
+
+---
 
 # Session 4 : Software Architecture
 

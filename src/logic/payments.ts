@@ -7,6 +7,7 @@ import { HTTP, Response } from "../tools/http";
 
 export class Payments {
   private paymentAPIUrl = "https://pay-me.com/v1/payments";
+
   public createPayment(
     paymentMethod: string,
     cardNumber: string,
@@ -21,6 +22,7 @@ export class Payments {
       return payment;
     }
   }
+
   public payBooking(payment: Payment): Response {
     const options = {
       method: "POST",
@@ -38,10 +40,12 @@ export class Payments {
     const response = HTTP.request(this.paymentAPIUrl, options);
     return response;
   }
+
   public savePayment(payment: Payment): Payment {
     DB.update(payment);
     return payment;
   }
+
   public refundBooking(
     paymentMethod: string,
     cardNumber: string,
@@ -73,7 +77,7 @@ export class Payments {
       payment.gatewayCode = response.body["data"]["transaction_number"];
       DB.update(payment);
       // 🚨 🤔 🤢
-      // ! 1.3
+      // ! 1.3.7
       // Command-Query separation
       // 🚨 🤔 🤢
       return payment;
