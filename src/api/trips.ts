@@ -14,7 +14,7 @@ export class Trips {
    * Query to get the list of offered trips
    * @returns {Trip[]} the list of offered trips
    */
-  public getOffers(): Trip[] {
+  public getList(): Trip[] {
     return DB.select<Trip[]>(`SELECT * FROM trips`);
   }
   /**
@@ -30,7 +30,7 @@ export class Trips {
    * @returns {Trip} the new trip object
    * @throws {Error} if the trip is not possible
    * */
-  public offerTrip(
+  public offer(
     operatorId: string,
     destination: string,
     startDate: Date,
@@ -59,7 +59,7 @@ export class Trips {
    * @returns the trip object cancelled
    * @throws {Error} if the trip cancellation is not possible
    */
-  public cancelTrip(operatorId: string, tripId: string): void {
+  public cancel(operatorId: string, tripId: string): void {
     const trip = DB.select<Trip>(`SELECT * FROM trips WHERE id = '${tripId}'`);
     if (trip.operatorId !== operatorId) {
       throw new Error("You can't cancel a trip that is not yours");

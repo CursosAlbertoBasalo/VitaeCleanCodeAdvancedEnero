@@ -7,7 +7,7 @@
 ### 1 Principles of Software Design
 
 - 1.1 YAGNI, KISS, DRY
-- 1.2 Obstacles of change
+- 1.2 Obstacles for change
 - 1.3 Data-Driven Design
 
 ### 2 SOLID Principles

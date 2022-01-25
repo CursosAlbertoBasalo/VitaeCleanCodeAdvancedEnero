@@ -8,7 +8,7 @@
 
 - Clean code
 
-## Lesson 1.2 : Obstacles of change
+## Lesson 1.2 : Obstacles for change
 
 - Reduce afferent (dependents) and efferent (dependencies) coupling
 
