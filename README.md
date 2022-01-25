@@ -8,7 +8,7 @@
 
 - 1.1 YAGNI, KISS, DRY
 - 1.2 Obstacles for change
-- 1.3 Data-Driven Design
+- 1.3 Metrics, preventers and facilitators
 
 ### 2 SOLID Principles
 

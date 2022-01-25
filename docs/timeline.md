@@ -2,19 +2,27 @@
 
 ## Lesson 1.1 : YAGNI, KISS, DRY
 
-- Bookings service
-
-- Minimalist
-
-- Clean code
-
 ## Lesson 1.2 : Obstacles for change
+
+## Lesson 1.3 : Metrics, preventers and facilitators
 
 - Reduce afferent (dependents) and efferent (dependencies) coupling
 
 > `Payment`: 4 afferent dependents (not that many)
 
 > `Bookings`: 8 efferent dependencies:
+
+- Feature envy
+
+> ?
+
+- Inappropriate intimacy
+
+> ?
+
+- Primitive obsession
+
+> `Trips.assertDateRange` and `Bookings.calculatePrice` : use a Range class with invariants and logic
 
 - Reduce calls Tell Don`t Ask
 
@@ -23,12 +31,6 @@
 - Reduce knowledge with Law of Demeter
 
 > `Bookings.notify`: don`t use emailComposer and.. TDA
-
-## Lesson 1.3 : Data-Driven Design
-
-- Primitive obsession
-
-> `Trips.assertDateRange` and `Bookings.calculatePrice` : use a Range class with invariants and logic
 
 - Command-Query separation
 
