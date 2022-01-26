@@ -2,7 +2,6 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-lines */
-/* eslint-disable max-params */
 import { Notifications } from "../logic/notifications";
 import { Operators } from "../logic/operators";
 import { Payments } from "../logic/payments";
@@ -144,7 +143,7 @@ export class Bookings {
     cardExpiry: string,
     cardCVC: string
   ): Payment {
-    this.booking.price = this.calculatePrice();
+       this.booking.price = this.calculatePrice();
     // 🚨 🤔 🤢
     // ! 1.3.5
     // ! Tell don't ask
@@ -166,8 +165,7 @@ export class Bookings {
     // ! 1.3.6
     // ! Demeter Law
     // 🚨 🤔 🤢
-    payment.status =
-      response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
+    payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
     payment.gatewayCode = response.body["data"]["transaction_number"];
     payments.savePayment(payment);
     if (payment.status === PaymentStatus.REFUSED) {
