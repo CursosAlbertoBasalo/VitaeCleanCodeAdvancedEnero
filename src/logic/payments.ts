@@ -1,29 +1,31 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
-/* eslint-disable max-params */
+import { Booking } from "../models/booking";
 import { Payment, PaymentKinds, PaymentStatus } from "../models/payment";
 import { DB } from "../tools/bd";
-import { HTTP, Response } from "../tools/http";
+import { HTTP } from "../tools/http";
 
 export class Payments {
   private paymentAPIUrl = "https://pay-me.com/v1/payments";
 
-  public createPayment(
+  public payBooking(
+    booking: Booking,
     paymentMethod: string,
     cardNumber: string,
     cardExpiry: string,
-    cardCVC: string,
-    amount: number,
-    concept: string
+    cardCVC: string
   ): Payment {
-    if (paymentMethod === "credit-card") {
-      const payment = new Payment(cardNumber, cardExpiry, cardCVC, amount, concept);
-      payment.id = DB.insert<Payment>(payment);
-      return payment;
+    const payment = this.createPayment(
+      paymentMethod,
+      cardNumber,
+      cardExpiry,
+      cardCVC,
+      booking.price,
+      JSON.stringify(booking)
+    );
+    if (!payment) {
+      throw new Error("Create Payment failed");
     }
-  }
-
-  public payBooking(payment: Payment): Response {
     const options = {
       method: "POST",
       headers: {
@@ -38,11 +40,9 @@ export class Payments {
       },
     };
     const response = HTTP.request(this.paymentAPIUrl, options);
-    return response;
-  }
-
-  public savePayment(payment: Payment): Payment {
-    DB.update(payment);
+    payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
+    payment.gatewayCode = response.body["data"]["transaction_number"];
+    this.savePayment(payment);
     return payment;
   }
 
@@ -75,12 +75,31 @@ export class Payments {
       const response = HTTP.request(this.paymentAPIUrl, options);
       payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
       payment.gatewayCode = response.body["data"]["transaction_number"];
-      DB.update(payment);
+      this.savePayment(payment);
       // 🚨 🤔 🤢
       // ! 1.3.7
       // Command-Query separation
       // 🚨 🤔 🤢
       return payment;
     }
+  }
+
+  private createPayment(
+    paymentMethod: string,
+    cardNumber: string,
+    cardExpiry: string,
+    cardCVC: string,
+    amount: number,
+    concept: string
+  ): Payment {
+    if (paymentMethod === "credit-card") {
+      const payment = new Payment(cardNumber, cardExpiry, cardCVC, amount, concept);
+      payment.id = DB.insert<Payment>(payment);
+      return payment;
+    }
+  }
+  private savePayment(payment: Payment): Payment {
+    DB.update(payment);
+    return payment;
   }
 }
