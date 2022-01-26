@@ -2,7 +2,6 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-lines */
-/* eslint-disable max-params */
 import { Notifications } from "../logic/notifications";
 import { Operators } from "../logic/operators";
 import { Payments } from "../logic/payments";

@@ -1,6 +1,5 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
-/* eslint-disable max-params */
 import { Booking } from "../models/booking";
 import { Payment, PaymentKinds, PaymentStatus } from "../models/payment";
 import { DB } from "../tools/bd";
