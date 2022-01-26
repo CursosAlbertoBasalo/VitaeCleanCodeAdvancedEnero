@@ -29,7 +29,7 @@ export class Bookings {
   private notifications: Notifications;
 
   /**
-   * Solicites a new booking
+   * Requests a new booking
    * @param {string} travelerId - the id of the traveler soliciting the booking
    * @param {string} tripId - the id of the trip to book
    * @param {number} passengersCount - the number of passengers to reserve
@@ -41,7 +41,7 @@ export class Bookings {
    * @returns {Booking} the new booking object
    * @throws {Error} if the booking is not possible
    * */
-  public solicite(
+  public request(
     travelerId: string,
     tripId: string,
     passengersCount: number,
