@@ -9,7 +9,11 @@ export class Emails {
 
   public constructor(private traveler: Traveler, private booking: Booking, private payment: Payment) {}
 
-  public getSalutation(): string {
+  public getBody() {
+    return this.getSalutation() + this.getMainBody() + this.getSignature();
+  }
+
+  private getSalutation(): string {
     switch (this.booking.status) {
       case BookingStatus.RESERVED:
         return (
@@ -37,10 +41,10 @@ export class Emails {
         );
     }
   }
-  public getMainBody(): string {
+  private getMainBody(): string {
     return JSON.stringify(this.booking) + this.newLine + JSON.stringify(this.payment);
   }
-  public getSignature(): string {
+  private getSignature(): string {
     return "Best regards," + this.newLine + "The Astro Bookings team";
   }
 }

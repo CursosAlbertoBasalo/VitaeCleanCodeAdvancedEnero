@@ -51,7 +51,11 @@ export class Notifications {
     // ! 1.3.3
     // ! Inappropriate intimacy
     // 🚨 🤔 🤢
-    return this.emails.getSalutation() + this.emails.getMainBody() + this.emails.getSignature();
+    // 🚨 🤔 🤢
+    // ! 1.3.5
+    // ! Tell Dont Ask
+    // 🚨 🤔 🤢
+    return this.emails.getBody();
   }
 
   private sendEmailByHttp(recipient: string, subject: string, body: string): unknown {
