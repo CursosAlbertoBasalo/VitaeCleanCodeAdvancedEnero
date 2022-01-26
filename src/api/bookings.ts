@@ -13,7 +13,7 @@ import { Trip } from "../models/trip";
 import { DB } from "../tools/bd";
 
 /**
- * Class for solicite, annulate or cancel bookings
+ * Class for request, annulate or cancel bookings
  * @public
  */
 export class Bookings {
@@ -29,7 +29,7 @@ export class Bookings {
   private notifications: Notifications;
 
   /**
-   * Solicites a new booking
+   * Requests a new booking
    * @param {string} travelerId - the id of the traveler soliciting the booking
    * @param {string} tripId - the id of the trip to book
    * @param {number} passengersCount - the number of passengers to reserve
@@ -41,7 +41,7 @@ export class Bookings {
    * @returns {Booking} the new booking object
    * @throws {Error} if the booking is not possible
    * */
-  public solicite(
+  public request(
     travelerId: string,
     tripId: string,
     passengersCount: number,
@@ -51,7 +51,13 @@ export class Bookings {
     hasPremiumFoods: boolean,
     extraLuggageKilos: number
   ): Booking {
-    this.create(travelerId, tripId, passengersCount, hasPremiumFoods, extraLuggageKilos);
+    this.create(
+      travelerId,
+      tripId,
+      passengersCount,
+      hasPremiumFoods,
+      extraLuggageKilos
+    );
     this.saveBooking();
     const payment = this.pay(cardNumber, cardExpiry, cardCVC);
     this.reserve();
@@ -104,9 +110,14 @@ export class Bookings {
     if (passengersCount > maxPassengersPerVIPBooking) {
       throw new Error("VIPs can't have more than 6 passengers");
     }
-    this.traveler = DB.select<Traveler>(`SELECT * FROM travelers WHERE id = '${travelerId}'`);
+    this.traveler = DB.select<Traveler>(
+      `SELECT * FROM travelers WHERE id = '${travelerId}'`
+    );
     const maxPassengersPerBooking = 4;
-    if (this.traveler.isVIP === false && passengersCount > maxPassengersPerBooking) {
+    if (
+      this.traveler.isVIP === false &&
+      passengersCount > maxPassengersPerBooking
+    ) {
       throw new Error("Normal travelers can't have more than 4 passengers");
     }
     if (passengersCount <= 0) {
@@ -117,7 +128,10 @@ export class Bookings {
   private checkAvailability(tripId: string, passengersCount: number) {
     this.trip = DB.select<Trip>(`SELECT * FROM trips WHERE id = '${tripId}'`);
     this.operators = new Operators(this.trip.operatorId);
-    const isAvailable = this.operators.verifyAvailability(this.trip, passengersCount);
+    const isAvailable = this.operators.verifyAvailability(
+      this.trip,
+      passengersCount
+    );
     if (!isAvailable) {
       throw new Error("The trip is not available");
     }
@@ -125,7 +139,11 @@ export class Bookings {
   private saveBooking() {
     this.booking.id = DB.insert<Booking>(this.booking);
   }
-  private pay(cardNumber: string, cardExpiry: string, cardCVC: string): Payment {
+  private pay(
+    cardNumber: string,
+    cardExpiry: string,
+    cardCVC: string
+  ): Payment {
     this.booking.price = this.calculatePrice();
     // 🚨 🤔 🤢
     // ! 1.3.5
@@ -148,7 +166,8 @@ export class Bookings {
     // ! 1.3.6
     // ! Demeter Law
     // 🚨 🤔 🤢
-    payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
+    payment.status =
+      response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
     payment.gatewayCode = response.body["data"]["transaction_number"];
     payments.savePayment(payment);
     if (payment.status === PaymentStatus.REFUSED) {
@@ -166,23 +185,34 @@ export class Bookings {
     // ! 1.3.4
     // ! Primitive obsession
     // 🚨 🤔 🤢
-    const stayingMilliseconds = this.trip.endDate.getTime() - this.trip.startDate.getTime();
+    const stayingMilliseconds =
+      this.trip.endDate.getTime() - this.trip.startDate.getTime();
     const stayingNights = Math.round(stayingMilliseconds / millisecondsPerDay);
     const stayingPrice = stayingNights * this.trip.stayingNightPrice;
-    const flightPrice = this.trip.flightPrice + (this.booking.hasPremiumFoods ? this.trip.premiumFoodPrice : 0);
+    const flightPrice =
+      this.trip.flightPrice +
+      (this.booking.hasPremiumFoods ? this.trip.premiumFoodPrice : 0);
     const pricePerPassenger = flightPrice + stayingPrice;
     const passengersPrice = pricePerPassenger * this.booking.passengersCount;
-    const extraLuggageKilosPrice = this.booking.extraLuggageKilos * this.trip.extraLuggagePricePerKilo;
+    const extraLuggageKilosPrice =
+      this.booking.extraLuggageKilos * this.trip.extraLuggagePricePerKilo;
     const totalPrice = passengersPrice + extraLuggageKilosPrice;
     return totalPrice;
   }
   private reserve() {
-    this.booking.operatorReserveCode = this.operators.reserveBooking(this.booking, this.trip);
+    this.booking.operatorReserveCode = this.operators.reserveBooking(
+      this.booking,
+      this.trip
+    );
     this.booking.status = BookingStatus.RESERVED;
     DB.update(this.booking);
   }
   private notify(payment: Payment) {
-    this.notifications = new Notifications(this.traveler, this.booking, payment);
+    this.notifications = new Notifications(
+      this.traveler,
+      this.booking,
+      payment
+    );
     this.notifications.send();
     switch (this.booking.status) {
       case BookingStatus.RESERVED:
@@ -198,14 +228,18 @@ export class Bookings {
     DB.update(this.booking);
   }
   private validateAnnulation(bookingId: string, travelerId: string) {
-    this.booking = DB.select<Booking>(`SELECT * FROM bookings WHERE id = '${bookingId}'`);
+    this.booking = DB.select<Booking>(
+      `SELECT * FROM bookings WHERE id = '${bookingId}'`
+    );
     if (this.booking.travelerId !== travelerId) {
       throw new Error("The traveler is not the owner of the booking");
     }
   }
   private refund() {
     const payments = new Payments();
-    const chargedPayment = DB.select<Payment>(`SELECT * FROM payments WHERE id = '${this.booking.paymentId}'`);
+    const chargedPayment = DB.select<Payment>(
+      `SELECT * FROM payments WHERE id = '${this.booking.paymentId}'`
+    );
     // 🚨 🤔 🤢
     // ! 1.3.7
     // ! Command-Query segregation

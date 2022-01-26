@@ -1,7 +1,7 @@
 /* eslint-disable max-params */
 
 export enum BookingStatus {
-  SOLICITED,
+  REQUESTED,
   PAID,
   RESERVED,
   BOOKING_NOTIFIED,
@@ -18,7 +18,7 @@ export class Booking {
   tripId: string;
   travelerId: string;
   passengersCount: number;
-  status: BookingStatus = BookingStatus.SOLICITED;
+  status: BookingStatus = BookingStatus.REQUESTED;
   price: number;
   hasPremiumFoods = false;
   extraLuggageKilos = 0;
