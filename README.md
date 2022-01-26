@@ -1,6 +1,6 @@
 # Clean Code Advanced
 
-> Design Patterns and Software Architecture For VITAE
+> Design Patterns and Software Architecture
 
 ## 📚 Contents
 
