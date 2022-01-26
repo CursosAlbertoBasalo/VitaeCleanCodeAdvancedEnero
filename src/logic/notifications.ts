@@ -1,6 +1,7 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
 import { Booking, BookingStatus } from "../models/booking";
+import { Email } from "../models/email";
 import { Payment } from "../models/payment";
 import { Traveler } from "../models/traveler";
 import { HTTP } from "../tools/http";
@@ -35,10 +36,16 @@ export class Notifications {
         subject = `Trip corresponding to booking ${this.booking.id} was cancelled `;
         break;
     }
+    // 🧼 ✅
+    // 1.3.4
+    // Primitive obsession
+    // Solution: Using the constructor assertions
+    // 🧼 ✅
+    const email = new Email(this.traveler.email, subject, body);
     if (this.config === "http") {
-      this.sendEmailByHttp(this.traveler.email, subject, body);
+      this.sendEmailByHttp(email);
     } else {
-      this.sendEmailBySmtp(this.traveler.email, subject, body);
+      this.sendEmailBySmtp(email);
     }
   }
 
@@ -58,22 +65,18 @@ export class Notifications {
     return this.emails.getBody();
   }
 
-  private sendEmailByHttp(recipient: string, subject: string, body: string): unknown {
+  private sendEmailByHttp(email: Email): unknown {
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: {
-        recipient,
-        subject,
-        body,
-      },
+      body: email,
     };
 
     return HTTP.request(this.emailUrl, options);
   }
-  private sendEmailBySmtp(recipient: string, subject: string, body: string): unknown {
-    return this.smtpSender.sendMail(`"AstroBookings" <${this.smtpUser}>`, recipient, subject, body);
+  private sendEmailBySmtp(email: Email): unknown {
+    return this.smtpSender.sendMail(`"AstroBookings" <${this.smtpUser}>`, email.recipient, email.subject, email.body);
   }
 }

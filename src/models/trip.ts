@@ -1,5 +1,7 @@
 /* eslint-disable max-params */
 
+import { DateRange } from "./dateRange";
+
 export enum TripKinds {
   TRIP_ONLY,
   WITH_STAY,
@@ -34,6 +36,15 @@ export class Trip {
     flightPrice: number,
     stayingNightPrice = 0
   ) {
+    // 🧼 ✅
+    // 1.3.4
+    // Primitive obsession
+    // Solution: Assert data on constructor
+    // 🧼 ✅
+    if (flightPrice <= 0) {
+      throw new Error("The flight price must be greater than zero");
+    }
+    const dates = new DateRange(startDate, endDate);
     this.operatorId = operatorId;
     this.destination = destination;
     this.startDate = startDate;
