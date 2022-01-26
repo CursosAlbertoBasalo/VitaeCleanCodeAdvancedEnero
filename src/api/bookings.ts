@@ -127,30 +127,16 @@ export class Bookings {
   }
   private pay(cardNumber: string, cardExpiry: string, cardCVC: string): Payment {
     this.booking.price = this.calculatePrice();
-    // 🚨 🤔 🤢
-    // ! 1.3.5
-    // ! Tell don't ask
-    // 🚨 🤔 🤢
+    // 🧼 ✅
+    // 1.3.5
+    // Tell don't ask
+    // 🧼 ✅
     const payments = new Payments();
-    const payment = payments.createPayment(
-      "credit-card",
-      cardNumber,
-      cardExpiry,
-      cardCVC,
-      this.booking.price,
-      JSON.stringify(this.booking)
-    );
-    if (!payment) {
-      throw new Error("Create Payment failed");
-    }
-    const response = payments.payBooking(payment);
-    // 🚨 🤔 🤢
-    // ! 1.3.6
-    // ! Demeter Law
-    // 🚨 🤔 🤢
-    payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
-    payment.gatewayCode = response.body["data"]["transaction_number"];
-    payments.savePayment(payment);
+    const payment = payments.payBooking(this.booking, "credit-card", cardNumber, cardExpiry, cardCVC);
+    // 🧼 ✅
+    // 1.3.6
+    // Demeter Law
+    // 🧼 ✅
     if (payment.status === PaymentStatus.REFUSED) {
       throw new Error("The payment was refused");
     }
