@@ -32,7 +32,7 @@
 
 ### 1.3.6 Reduce knowledge with Law of Demeter
 
-> `this.dependency.dependency.method()`: avoid multiple dot calls
+> `Bookings.pay`: dealing with response object implies knowledge od deep dependencies
 
 ### 1.3.7 Command-Query segregation
 

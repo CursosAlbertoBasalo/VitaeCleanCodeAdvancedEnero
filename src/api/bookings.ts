@@ -128,7 +128,7 @@ export class Bookings {
   private pay(cardNumber: string, cardExpiry: string, cardCVC: string): Payment {
     this.booking.price = this.calculatePrice();
     // 🚨 🤔 🤢
-    // ! 1.2
+    // ! 1.3.5
     // ! Tell don't ask
     // 🚨 🤔 🤢
     const payments = new Payments();
@@ -144,6 +144,10 @@ export class Bookings {
       throw new Error("Create Payment failed");
     }
     const response = payments.payBooking(payment);
+    // 🚨 🤔 🤢
+    // ! 1.3.6
+    // ! Demeter Law
+    // 🚨 🤔 🤢
     payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
     payment.gatewayCode = response.body["data"]["transaction_number"];
     payments.savePayment(payment);
