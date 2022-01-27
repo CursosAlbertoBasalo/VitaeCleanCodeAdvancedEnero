@@ -66,7 +66,7 @@
 ### 2.1.4 Interface segregation principle
 
 > `Operators`: Depend on abstraction not implementation
-> 💡 Improvement: create interfaces to every class
+> 💡 Improvement: create (short) interfaces to every class
 
 ## Lesson 2.3 : Dependency Inversion Principle
 
