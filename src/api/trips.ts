@@ -10,6 +10,12 @@ import { Bookings } from "./bookings";
  * @public
  */
 export class Trips {
+  // 🚨 🤔 🤢
+  // ! 2.1.1
+  // ! receive trips processing petitions; but, saving?
+  // ! distinct levels of abstraction
+  // 🚨 🤔 🤢
+
   /**
    * Query to get the list of offered trips
    * @returns {Trip[]} the list of offered trips
@@ -40,11 +46,6 @@ export class Trips {
     extraLuggagePricePerKilo = 0,
     premiumFoodPrice = 0
   ): Trip {
-    // 🧼 ✅
-    // 1.3.4
-    // Primitive obsession
-    // Solution: Using the constructor assertions
-    // 🧼 ✅
     const trip = new Trip(operatorId, destination, startDate, endDate, flightPrice, stayingNightPrice);
     if (stayingNightPrice > 0) {
       trip.kind = TripKinds.WITH_STAY;

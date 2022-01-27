@@ -46,19 +46,32 @@
 
 ## Lesson 2.1 : Single Responsibility Principle
 
-- One class responsible for one thing
+### 2.1.1 Single responsibility
+
+> `Bookings`: Long class with several responsibilities and level of abstraction
+> 💡 Improvement: apply to every class
 
 ## Lesson 2.2 : OLI principles
 
-- Open for extension, closed for modification
+🗞️ VirginPlanetary added to SpaceY and GreenOrigin as a new operator
 
-- Liskov substitution principle
+### 2.1.2 Open/Close Principle
 
-- Interface segregation principle
+> `Operators`: Favor add code, not change code
+
+### 2.1.3 Liskov substitution principle
+
+> `Operators`: Beware of inheritance
+
+### 2.1.4 Interface segregation principle
+
+> `Operators`: Depend on abstraction not implementation
 
 ## Lesson 2.3 : Dependency Inversion Principle
 
-- High level modules should not depend on low level modules
+### 2.1.5 Dependency Inversion Principle
+
+> `Notifications` High level modules should not depend on low level modules
 
 ---
 

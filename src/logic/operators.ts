@@ -6,6 +6,11 @@ import { Trip } from "../models/trip";
 import { HTTP } from "../tools/http";
 
 export class Operators {
+  // 🚨 🤔 🤢
+  // ! 2.2
+  // ! OLI
+  // ! VirginPlanetary added to SpaceY and GreenOrigin as operators
+  // 🚨 🤔 🤢
   private operatorAPIUrl: string;
 
   constructor(private operatorId: string) {

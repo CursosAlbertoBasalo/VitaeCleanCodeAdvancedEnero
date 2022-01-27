@@ -7,6 +7,7 @@ import { Traveler } from "../models/traveler";
 import { HTTP } from "../tools/http";
 import { SMTP } from "../tools/smtp";
 import { Emails } from "./emails";
+
 export class Notifications {
   private config = "http";
   private emailUrl = "https://mailmonk.com/v1/send";
@@ -36,11 +37,6 @@ export class Notifications {
         subject = `Trip corresponding to booking ${this.booking.id} was cancelled `;
         break;
     }
-    // 🧼 ✅
-    // 1.3.4
-    // Primitive obsession
-    // Solution: Using the constructor assertions
-    // 🧼 ✅
     const email = new Email(this.traveler.email, subject, body);
     if (this.config === "http") {
       this.sendEmailByHttp(email);
@@ -50,18 +46,6 @@ export class Notifications {
   }
 
   private buildBody() {
-    // 🧼 ✅
-    // 1.3.2
-    // Feature envy
-    // 🧼 ✅
-    // 🧼 ✅
-    // 1.3.3
-    // Inappropriate intimacy
-    // 🧼 ✅
-    // 🧼 ✅
-    // 1.3.5
-    // Tell Dont Ask
-    // 🧼 ✅
     return this.emails.getBody();
   }
 

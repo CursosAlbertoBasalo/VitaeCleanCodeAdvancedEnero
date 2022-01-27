@@ -25,6 +25,11 @@ export class Bookings {
   // After SOLID refactors, this class should have less dependencies
   // 🚨 🤔 🤢
 
+  // 🚨 🤔 🤢
+  // ! 2.1.1
+  // ! SRP
+  // 🚨 🤔 🤢
+
   private bookingRequest: BookingRequest;
   private operators: Operators;
   private booking: Booking;
@@ -121,10 +126,6 @@ export class Bookings {
     if (this.traveler.isVIP === false && passengersCount > maxPassengersPerBooking) {
       throw new Error("Normal travelers can't have more than 4 passengers");
     }
-    // 🧼 ✅
-    // 1.3.7
-    // Command-Query segregation
-    // 🧼 ✅
   }
   private checkAvailability() {
     this.trip = DB.select<Trip>(`SELECT * FROM trips WHERE id = '${this.bookingRequest.tripId}'`);
@@ -138,10 +139,6 @@ export class Bookings {
     this.booking.id = DB.insert<Booking>(this.booking);
   }
   private pay() {
-    // 🧼 ✅
-    // 1.3.5
-    // Tell don't ask
-    // 🧼 ✅
     const payments = new Payments();
     this.booking.price = this.calculatePrice();
     const concept = JSON.stringify(this.booking);
@@ -150,10 +147,6 @@ export class Bookings {
     // ToDo: Command-Query segregation
     // 🚨 🤔 🤢
     this.payment = payments.payBooking("credit-card", this.bookingRequest.card, this.booking.price, concept);
-    // 🧼 ✅
-    // 1.3.6
-    // Demeter Law
-    // 🧼 ✅
     this.booking.paymentId = this.payment.id;
     this.booking.status = BookingStatus.PAID;
     DB.update(this.booking);
