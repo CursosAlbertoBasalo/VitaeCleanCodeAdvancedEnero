@@ -1,9 +1,10 @@
 /* eslint-disable max-statements */
-/* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
 import { Booking } from "../models/booking";
 import { Trip } from "../models/trip";
 import { HTTP } from "../tools/http";
+
+const OK = 200;
 
 export class Operators {
   // 🚨 🤔 🤢
@@ -43,7 +44,7 @@ export class Operators {
     }
     const response = HTTP.request(url, options);
     if (this.operatorId === "SpaceY") {
-      return response.status === 200;
+      return response.status === OK;
     } else {
       return (response.body["data"] as number) > passengersCount;
     }

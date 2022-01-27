@@ -1,5 +1,3 @@
-/* eslint-disable no-magic-numbers */
-/* eslint-disable max-lines-per-function */
 import { Booking, BookingStatus } from "../models/booking";
 import { Email } from "../models/email";
 import { Payment } from "../models/payment";
@@ -8,11 +6,12 @@ import { HTTP } from "../tools/http";
 import { SMTP } from "../tools/smtp";
 import { Emails } from "./emails";
 
+const PORT = 25;
 export class Notifications {
   private config = "http";
   private emailUrl = "https://mailmonk.com/v1/send";
   private smtpServer = "smtp.astrobookings.com";
-  private smtpPort = 25;
+  private smtpPort = PORT;
   private smtpUser = "Traveler assistant";
   private smtpPassword = "astrobookings";
   private emails: Emails;

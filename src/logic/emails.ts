@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable no-unused-vars */
 import { Booking, BookingStatus } from "../models/booking";
 import { Payment } from "../models/payment";
 import { Traveler } from "../models/traveler";

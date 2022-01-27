@@ -1,9 +1,10 @@
-/* eslint-disable no-magic-numbers */
 /* eslint-disable max-lines-per-function */
 import { CreditCard } from "../models/creditCard";
 import { Payment, PaymentKinds, PaymentStatus } from "../models/payment";
 import { DB } from "../tools/bd";
 import { HTTP } from "../tools/http";
+
+const OK = 200;
 
 export class Payments {
   private paymentAPIUrl = "https://pay-me.com/v1/payments";
@@ -28,7 +29,7 @@ export class Payments {
         },
       };
       const response = HTTP.request(this.paymentAPIUrl, options);
-      payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
+      payment.status = response.status === OK ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
       payment.gatewayCode = response.body["data"]["transaction_number"];
       this.savePayment(payment);
       if (payment.status === PaymentStatus.REFUSED) {
@@ -36,7 +37,7 @@ export class Payments {
       }
       // 🚨 🤔 🤢
       // 1.3.7
-      // Command-Query separation
+      // ToDo: Command-Query separation
       // 🚨 🤔 🤢
       return payment;
     }
@@ -62,12 +63,12 @@ export class Payments {
         },
       };
       const response = HTTP.request(this.paymentAPIUrl, options);
-      payment.status = response.status === 200 ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
+      payment.status = response.status === OK ? PaymentStatus.PROCESSED : PaymentStatus.REFUSED;
       payment.gatewayCode = response.body["data"]["transaction_number"];
       this.savePayment(payment);
       // 🚨 🤔 🤢
       // 1.3.7
-      // Command-Query separation
+      // ToDo: Command-Query separation
       // 🚨 🤔 🤢
       return payment;
     }

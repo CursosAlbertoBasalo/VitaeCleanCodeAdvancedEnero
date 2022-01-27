@@ -53,7 +53,7 @@
 
 ## Lesson 2.2 : OLI principles
 
-🗞️ VirginPlanetary added to SpaceY and GreenOrigin as a new operator
+- 🗞️ VirginPlanetary added to SpaceY and GreenOrigin as a new operator
 
 ### 2.1.2 Open/Close Principle
 
@@ -66,6 +66,7 @@
 ### 2.1.4 Interface segregation principle
 
 > `Operators`: Depend on abstraction not implementation
+> 💡 Improvement: create interfaces to every class
 
 ## Lesson 2.3 : Dependency Inversion Principle
 

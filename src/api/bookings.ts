@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 /* eslint-disable max-statements */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable max-lines */
@@ -152,12 +153,6 @@ export class Bookings {
     DB.update(this.booking);
   }
   private calculatePrice(): number {
-    // 🧼 ✅
-    // 1.3.4
-    // Primitive obsession
-    // Solution: Using a Value Object
-    // Alternative: Use a library with date range utilities
-    // 🧼 ✅
     const dates = new DateRange(this.trip.startDate, this.trip.endDate);
     const stayingNights = dates.getNights();
     const stayingPrice = stayingNights * this.trip.stayingNightPrice;
