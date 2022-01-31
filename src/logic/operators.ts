@@ -8,7 +8,7 @@ import { SpaceY } from "./spacey";
 
 export class Operators {
   // 🧼 ✅
-  // 2.2
+  // 2.2.1..3
   // OLI
   // VirginPlanetary added to SpaceY and GreenOrigin as operators
   // 🧼 ✅

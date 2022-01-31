@@ -6,17 +6,27 @@ import { Traveler } from "../models/traveler";
 import { Trip } from "../models/trip";
 import { BookingsData } from "../repository/bookingsData";
 import { DB } from "../tools/bd";
+import { IEmailSend } from "../tools/emailSend.interface";
+import { MailMonk } from "../tools/mailMonk";
+import { SMTP } from "../tools/smtp";
 import { Notifications } from "./notifications";
 import { Payments } from "./payments";
-
 export class BookingLogic {
   private notifications: Notifications;
 
-  constructor(private booking: Booking) {}
+  private config = "http";
+  private emailSender: IEmailSend;
+  constructor(private booking: Booking) {
+    if (this.config === "http") {
+      this.emailSender = new MailMonk();
+    } else {
+      this.emailSender = new SMTP();
+    }
+  }
 
   public notify(traveler: Traveler, payment: Payment) {
-    this.notifications = new Notifications(traveler, this.booking, payment);
-    this.notifications.send();
+    this.notifications = new Notifications(this.emailSender);
+    this.notifications.send(traveler, this.booking, payment);
     switch (this.booking.status) {
       case BookingStatus.RESERVED:
         this.booking.status = BookingStatus.BOOKING_NOTIFIED;

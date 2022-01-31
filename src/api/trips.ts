@@ -2,26 +2,27 @@
 /* eslint-disable max-lines-per-function */
 import { Booking } from "../models/booking";
 import { Trip, TripKinds, TripStatus } from "../models/trip";
+import { TripsData } from "../repository/tripsData";
 import { DB } from "../tools/bd";
-import { Bookings } from "./bookings";
+import { BookingsUpdate } from "./bookingsUpdate";
 
 /**
  * Class for offering or canceling trips
  * @public
  */
 export class Trips {
-  // 🚨 🤔 🤢
-  // ! 2.1.1
-  // ! receive trips processing petitions; but, saving?
-  // ! distinct levels of abstraction
-  // 🚨 🤔 🤢
+  // 🧼 ✅
+  // 2.1.1
+  // receive trips processing petitions; but, saving?
+  // distinct levels of abstraction
+  // 🧼 ✅
 
   /**
    * Query to get the list of offered trips
    * @returns {Trip[]} the list of offered trips
    */
   public getList(): Trip[] {
-    return DB.select<Trip[]>(`SELECT * FROM trips`);
+    return TripsData.selectAll();
   }
   /**
    * Offers a new trip
@@ -54,7 +55,7 @@ export class Trips {
       trip.kind = TripKinds.TRIP_ONLY;
       trip.premiumFoodPrice = premiumFoodPrice;
     }
-    trip.id = DB.insert<Trip>(trip);
+    trip.id = TripsData.insert(trip);
     return trip;
   }
   /**
@@ -70,13 +71,13 @@ export class Trips {
       throw new Error("You can't cancel a trip that is not yours");
     }
     trip.status = TripStatus.CANCELLED;
-    DB.update<Trip>(trip);
+    TripsData.update(trip);
     this.cancelBookings(tripId);
   }
   private cancelBookings(tripId: string) {
     const bookings = DB.select<Booking[]>(`SELECT * FROM bookings WHERE tripId = '${tripId}'`);
     bookings.forEach(booking => {
-      new Bookings().cancel(booking);
+      new BookingsUpdate().cancel(booking);
     });
   }
 }
