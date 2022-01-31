@@ -100,6 +100,9 @@ export class Bookings {
    * */
   public cancel(booking: Booking) {
     this.booking = booking;
+    this.traveler = DB.select<Traveler>(
+      `SELECT * FROM travelers WHERE id = '${booking.travelerId}'`
+    );
     this.saveCancellation();
     this.payment = this.refund();
     this.notify();
@@ -122,16 +125,26 @@ export class Bookings {
     if (passengersCount > maxPassengersPerVIPBooking) {
       throw new Error("VIPs can't have more than 6 passengers");
     }
-    this.traveler = DB.select<Traveler>(`SELECT * FROM travelers WHERE id = '${this.bookingRequest.travelerId}'`);
+    this.traveler = DB.select<Traveler>(
+      `SELECT * FROM travelers WHERE id = '${this.bookingRequest.travelerId}'`
+    );
     const maxPassengersPerBooking = 4;
-    if (this.traveler.isVIP === false && passengersCount > maxPassengersPerBooking) {
+    if (
+      this.traveler.isVIP === false &&
+      passengersCount > maxPassengersPerBooking
+    ) {
       throw new Error("Normal travelers can't have more than 4 passengers");
     }
   }
   private checkAvailability() {
-    this.trip = DB.select<Trip>(`SELECT * FROM trips WHERE id = '${this.bookingRequest.tripId}'`);
+    this.trip = DB.select<Trip>(
+      `SELECT * FROM trips WHERE id = '${this.bookingRequest.tripId}'`
+    );
     this.operators = new Operators(this.trip.operatorId);
-    const isAvailable = this.operators.verifyAvailability(this.trip, this.bookingRequest.passengers.count);
+    const isAvailable = this.operators.verifyAvailability(
+      this.trip,
+      this.bookingRequest.passengers.count
+    );
     if (!isAvailable) {
       throw new Error("The trip is not available");
     }
@@ -147,7 +160,12 @@ export class Bookings {
     // ToDo: 1.3.7
     // ToDo: Command-Query segregation
     // 🚨 🤔 🤢
-    this.payment = payments.payBooking("credit-card", this.bookingRequest.card, this.booking.price, concept);
+    this.payment = payments.payBooking(
+      "credit-card",
+      this.bookingRequest.card,
+      this.booking.price,
+      concept
+    );
     this.booking.paymentId = this.payment.id;
     this.booking.status = BookingStatus.PAID;
     DB.update(this.booking);
@@ -156,20 +174,30 @@ export class Bookings {
     const dates = new DateRange(this.trip.startDate, this.trip.endDate);
     const stayingNights = dates.getNights();
     const stayingPrice = stayingNights * this.trip.stayingNightPrice;
-    const flightPrice = this.trip.flightPrice + (this.booking.hasPremiumFoods ? this.trip.premiumFoodPrice : 0);
+    const flightPrice =
+      this.trip.flightPrice +
+      (this.booking.hasPremiumFoods ? this.trip.premiumFoodPrice : 0);
     const pricePerPassenger = flightPrice + stayingPrice;
     const passengersPrice = pricePerPassenger * this.booking.passengersCount;
-    const extraLuggageKilosPrice = this.booking.extraLuggageKilos * this.trip.extraLuggagePricePerKilo;
+    const extraLuggageKilosPrice =
+      this.booking.extraLuggageKilos * this.trip.extraLuggagePricePerKilo;
     const totalPrice = passengersPrice + extraLuggageKilosPrice;
     return totalPrice;
   }
   private reserve() {
-    this.booking.operatorReserveCode = this.operators.reserveBooking(this.booking, this.trip);
+    this.booking.operatorReserveCode = this.operators.reserveBooking(
+      this.booking,
+      this.trip
+    );
     this.booking.status = BookingStatus.RESERVED;
     DB.update(this.booking);
   }
   private notify() {
-    this.notifications = new Notifications(this.traveler, this.booking, this.payment);
+    this.notifications = new Notifications(
+      this.traveler,
+      this.booking,
+      this.payment
+    );
     this.notifications.send();
     switch (this.booking.status) {
       case BookingStatus.RESERVED:
@@ -185,15 +213,26 @@ export class Bookings {
     DB.update(this.booking);
   }
   private validateAnnulation(bookingId: string, travelerId: string) {
-    this.booking = DB.select<Booking>(`SELECT * FROM bookings WHERE id = '${bookingId}'`);
+    this.traveler = DB.select<Traveler>(
+      `SELECT * FROM travelers WHERE id = '${travelerId}'`
+    );
+    this.booking = DB.select<Booking>(
+      `SELECT * FROM bookings WHERE id = '${bookingId}'`
+    );
     if (this.booking.travelerId !== travelerId) {
       throw new Error("The traveler is not the owner of the booking");
     }
   }
   private refund() {
     const payments = new Payments();
-    const chargedPayment = DB.select<Payment>(`SELECT * FROM payments WHERE id = '${this.booking.paymentId}'`);
-    const creditCard = new CreditCard(chargedPayment.cardNumber, chargedPayment.cardExpiry, chargedPayment.cardCVC);
+    const chargedPayment = DB.select<Payment>(
+      `SELECT * FROM payments WHERE id = '${this.booking.paymentId}'`
+    );
+    const creditCard = new CreditCard(
+      chargedPayment.cardNumber,
+      chargedPayment.cardExpiry,
+      chargedPayment.cardCVC
+    );
     // 🚨 🤔 🤢
     // ToDo: 1.3.7
     // ToDo: Command-Query segregation
