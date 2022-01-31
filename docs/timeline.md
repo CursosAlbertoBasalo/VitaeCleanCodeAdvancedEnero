@@ -55,22 +55,22 @@
 
 - 🗞️ VirginPlanetary added to SpaceY and GreenOrigin as a new operator
 
-### 2.1.2 Open/Close Principle
+### 2.2.1 Open/Close Principle
 
 > `Operators`: Favor add code, not change code
 
-### 2.1.3 Liskov substitution principle
+### 2.2.2 Liskov substitution principle
 
 > `Operators`: Beware of inheritance
 
-### 2.1.4 Interface segregation principle
+### 2.2.3 Interface segregation principle
 
 > `Operators`: Depend on abstraction not implementation
 > 💡 Improvement: create (short) interfaces to every class
 
 ## Lesson 2.3 : Dependency Inversion Principle
 
-### 2.1.5 Dependency Inversion Principle
+### 2.3.1 Dependency Inversion Principle
 
 > `Notifications` High level modules should not depend on low level modules
 
@@ -88,9 +88,9 @@
 
 ## Lesson 3.2 : Structural Patterns
 
-- Adapter
-
 - Facade
+
+- Adapter
 
 ## Lesson 3.3 : Behavioral Patterns
 
