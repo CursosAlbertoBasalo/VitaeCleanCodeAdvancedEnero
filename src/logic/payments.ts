@@ -9,6 +9,12 @@ const OK = 200;
 export class Payments {
   private paymentAPIUrl = "https://pay-me.com/v1/payments";
 
+  // 🚨 🤔 🤢
+  // 3.2.2
+  // ! Adapter or Bridge
+  // ! What happens if we change the payment gateway provider?
+  // 🚨 🤔 🤢
+
   public payBooking(paymentMethod: string, creditCard: CreditCard, amount: number, concept: string): Payment {
     if (paymentMethod === "credit-card") {
       const payment = this.createPayment(paymentMethod, creditCard, amount, concept);

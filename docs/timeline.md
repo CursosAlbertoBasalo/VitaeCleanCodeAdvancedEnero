@@ -95,22 +95,26 @@
 > `Bookings`: keep a single public API for booking operations hiding the rest of the system
 > 💬 Discussion: Is cancel an outer method?
 
-### 3.2.2 Adapter or Bridge
+### 3.2.2 Adapter or Bridge ❓
 
 > **To Do**
+
+> `Payments`: Adapt After or Bridge Before
+> 💬 Discussion: What happens if we change the payment gateway provider?
 
 ## Lesson 3.3 : Behavioral Patterns
 
 ### 3.3.1 Strategy
 
-> `Operators`: Change behavior on runtime based on operator
+> `Operators`: Change behavior on runtime based on operatorId
 > 💡 tip: uses a factory
+> 💡 Improvement: what if we want allow other payments methods?
 
-### 3.3.2 Command or Mediator
+### 3.3.2 Command
 
-> `Bookings-Facade`: Create and Update could be commands
+> **To Do**
 
-> `MailMonk`: Don`t use the direct class, use the mediator
+> `Bookings-Facade`: execute bookings commands based on name...
 
 ---
 
