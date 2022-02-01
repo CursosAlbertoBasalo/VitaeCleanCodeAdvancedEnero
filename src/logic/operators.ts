@@ -30,8 +30,9 @@ export class Operators {
 
   private getOperatorApi() {
     // 🚨 🤔 🤢
-    // 3.1.1
-    // Use Factory pattern hide the implementation of the API
+    // 3.2.1
+    // ! Strategy
+    // ! Change behavior on runtime based on operator
     // 🚨 🤔 🤢
     if (this.operatorId === "SpaceY") {
       return new SpaceY();

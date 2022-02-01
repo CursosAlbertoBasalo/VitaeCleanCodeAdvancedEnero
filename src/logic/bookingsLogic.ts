@@ -17,6 +17,11 @@ export class BookingLogic {
   private config = "http";
   private emailSender: IEmailSend;
   constructor(private booking: Booking) {
+    // 🚨 🤔 🤢
+    // 3.1.1
+    // ! Factory method -> Factory class
+    // ! create Email Sender instance based on configuration
+    // 🚨 🤔 🤢
     if (this.config === "http") {
       this.emailSender = new MailMonk();
     } else {

@@ -7,13 +7,18 @@ import { Emails } from "./emails";
 export class Notifications {
   private emails: Emails;
 
-  constructor(private emailSender: IEmailSend) {}
+  constructor(private emailSender: IEmailSend) {
+    // 🧼 ✅
+    // 2.3.1
+    // Dependency Inversion Principle
+    // 🧼 ✅
+  }
 
-  // 🧼 ✅
-  // 2.3.1
-  // Dependency Inversion Principle
-  // 🧼 ✅
-
+  // 🚨 🤔 🤢
+  // 3.1.2
+  // ! Builder
+  // ! Create and call a class method that builds the email object
+  // 🚨 🤔 🤢
   public send(traveler: Traveler, booking: Booking, payment: Payment): void {
     this.emails = new Emails(traveler, booking, payment);
     const body = this.emails.getBody();

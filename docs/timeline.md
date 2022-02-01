@@ -80,23 +80,37 @@
 
 ## Lesson 3.1 : Creational Patterns
 
-- Factory
+### 3.1.1 Factory
 
-- Builder
+> `BookingsLogic`: create Email Sender instance based on configuration
 
-- Singleton
+### 3.1.2 Builder
+
+> `Notifications`: Create and call a class method that builds the email object
 
 ## Lesson 3.2 : Structural Patterns
 
-- Facade
+### 3.2.1 Facade
 
-- Adapter
+> `Bookings`: keep a single public API for booking operations hiding the rest of the system
+> 💬 Discussion: Is cancel an outer method?
+
+### 3.2.2 Adapter or Bridge
+
+> **To Do**
 
 ## Lesson 3.3 : Behavioral Patterns
 
-- Strategy
+### 3.3.1 Strategy
 
-- Command
+> `Operators`: Change behavior on runtime based on operator
+> 💡 tip: uses a factory
+
+### 3.3.2 Command or Mediator
+
+> `Bookings-Facade`: Create and Update could be commands
+
+> `MailMonk`: Don`t use the direct class, use the mediator
 
 ---
 

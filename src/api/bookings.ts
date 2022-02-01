@@ -5,12 +5,9 @@
  * @public
  */
 export class Bookings {
-  // 🧼 ✅
-  // 1.3.1
-  // After SOLID refactors, this class should have less dependencies
-  // 🧼 ✅
   // 🚨 🤔 🤢
   // 3.2.1
-  // Use Facade pattern to keep a single public API for booking operations
+  // ! Facade
+  // ! keep a single public API for booking operations hiding the rest of the system
   // 🚨 🤔 🤢
 }
