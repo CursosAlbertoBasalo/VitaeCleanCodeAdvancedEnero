@@ -2,6 +2,7 @@ import { Booking, BookingStatus } from "../models/booking";
 import { Email } from "../models/email";
 import { Payment } from "../models/payment";
 import { Traveler } from "../models/traveler";
+import { IEmailSend } from "../tools/emailSend.interface";
 import { HTTP } from "../tools/http";
 import { SMTP } from "../tools/smtp";
 import { Emails } from "./emails";
@@ -15,10 +16,16 @@ export class Notifications {
   private smtpUser = "Traveler assistant";
   private smtpPassword = "astrobookings";
   private emails: Emails;
+  //private emailSender: IEmailSend;
 
   public smtpSender = new SMTP(this.smtpServer, this.smtpPort, this.smtpUser, this.smtpPassword);
 
-  constructor(private traveler: Traveler, private booking: Booking, private payment: Payment) {
+  constructor(
+    private emailSender: IEmailSend,
+    private traveler: Traveler,
+    private booking: Booking,
+    private payment: Payment
+  ) {
     this.emails = new Emails(traveler, booking, payment);
   }
 
@@ -37,11 +44,13 @@ export class Notifications {
         break;
     }
     const email = new Email(this.traveler.email, subject, body);
-    if (this.config === "http") {
-      this.sendEmailByHttp(email);
-    } else {
-      this.sendEmailBySmtp(email);
-    }
+    this.emailSender.sendMail(email);
+
+    // if (this.config === "http") {
+    //   this.sendEmailByHttp(email);
+    // } else {
+    //   this.sendEmailBySmtp(email);
+    // }
   }
 
   private buildBody() {

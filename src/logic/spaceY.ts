@@ -3,25 +3,25 @@
 import { Booking } from "../models/booking";
 import { Trip } from "../models/trip";
 import { HTTP } from "../tools/http";
-
+import { IOperatorsAPI } from "./operatorsAPI.interface";
 const OK = 200;
-
-export class Operators {
-  // 🚨 🤔 🤢
-  // ! 2.2
-  // ! OLI
-  // ! VirginPlanetary added to SpaceY and GreenOrigin as operators
-  // 🚨 🤔 🤢
-  private operatorAPIUrl: string;
-  private operator: IOperatorsAPI;
-
-  constructor(private operatorId: string) {
-    // this.operatorAPIUrl = this.getOperatorApiUrl();
-    this.operator = this.getOperator();
-  }
+export class SpaceY implements IOperatorsAPI {
+  private readonly operatorAPIUrl = "https://api.spacey.com/v1/";
 
   public verifyAvailability(trip: Trip, passengersCount: number): boolean {
-    return this.operator.verifyAvailability(trip, passengersCount);
+    const body = { tripId: trip.id, seats: passengersCount };
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    };
+    const url = this.operatorAPIUrl + "trips/verify";
+
+    const response = HTTP.request(url, options);
+    return response.status === OK;
   }
 
   public reserveBooking(booking: Booking, trip: Trip): string {
@@ -81,20 +81,5 @@ export class Operators {
     }
     HTTP.request(url, options);
     return;
-  }
-
-  private getOperatorApiUrl() {
-    if (this.operatorId === "SpaceY") {
-      return "https://api.spacey.com/v1/";
-    } else {
-      return "https://greenorigin.com/api/";
-    }
-  }
-  private getOperator(): IOperatorsAPI {
-    if (this.operatorId === "SpaceY") {
-      return new SpaceY();
-    } else {
-      return new SpaceY();
-    }
   }
 }
