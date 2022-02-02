@@ -1,40 +1,18 @@
-import { Booking, BookingStatus } from "../models/booking";
-import { Email } from "../models/email";
+import { Booking } from "../models/booking";
 import { Payment } from "../models/payment";
 import { Traveler } from "../models/traveler";
 import { IEmailSend } from "../tools/emailSend.interface";
-import { Emails } from "./emails";
+import { EmailBuilder } from "./email.builder";
 export class Notifications {
-  private emails: Emails;
+  constructor(private emailSender: IEmailSend) {}
 
-  constructor(private emailSender: IEmailSend) {
-    // 🧼 ✅
-    // 2.3.1
-    // Dependency Inversion Principle
-    // 🧼 ✅
-  }
-
-  // 🚨 🤔 🤢
+  // 🧼 ✅
   // 3.1.2
-  // ! Builder
-  // ! Create and call a class method that builds the email object
-  // 🚨 🤔 🤢
-  public send(traveler: Traveler, booking: Booking, payment: Payment): void {
-    this.emails = new Emails(traveler, booking, payment);
-    const body = this.emails.getBody();
-    let subject = "";
-    switch (booking.status) {
-      case BookingStatus.RESERVED:
-        subject = `Booking ${booking.id} reserved for ${booking.passengersCount} passengers`;
-        break;
-      case BookingStatus.RELEASED:
-        subject = `Booking ${booking.id} released for ${booking.passengersCount} passengers`;
-        break;
-      case BookingStatus.CANCELLED:
-        subject = `Trip corresponding to booking ${booking.id} was cancelled `;
-        break;
-    }
-    const email = new Email(traveler.email, subject, body);
+  // Builder
+  // Creates and call a class method that builds the email object
+  // 🧼 ✅
+  public send(booking: Booking, traveler: Traveler, payment: Payment): void {
+    const email = new EmailBuilder(booking, traveler, payment).build();
     this.emailSender.sendMail(email);
   }
 }

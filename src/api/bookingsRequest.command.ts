@@ -1,18 +1,16 @@
-/* eslint-disable max-lines-per-function */
 import { BookingLogic } from "../logic/bookingsLogic";
 import { Operators } from "../logic/operators";
 import { Booking, BookingStatus } from "../models/booking";
 import { BookingRequest } from "../models/bookingRequest";
-import { CreditCard } from "../models/creditCard";
-import { Passengers } from "../models/passengers";
 import { Payment } from "../models/payment";
 import { Traveler } from "../models/traveler";
 import { Trip } from "../models/trip";
 import { BookingsData } from "../repository/bookingsData";
 import { TravelersData } from "../repository/travelersData";
 import { TripsData } from "../repository/tripsData";
+import { IBookingCommand } from "./bookingCommand.interface";
 
-export class BookingsCreate {
+export class BookingsRequestCommand implements IBookingCommand {
   private booking: Booking;
   private bookingRequest: BookingRequest;
   private operators: Operators;
@@ -20,37 +18,8 @@ export class BookingsCreate {
   private traveler: Traveler;
   private trip: Trip;
 
-  /**
-   * Requests a new booking
-   * @param {string} travelerId - the id of the traveler soliciting the booking
-   * @param {string} tripId - the id of the trip to book
-   * @param {number} passengersCount - the number of passengers to reserve
-   * @param {string} cardNumber - the card number to pay with
-   * @param {string} cardExpiry - the card expiry date
-   * @param {string} cardCVC - the card CVC
-   * @param {boolean} hasPremiumFoods - if the traveler has premium foods
-   * @param {number} extraLuggageKilos - the number of extra luggage kilos
-   * @returns {Booking} the new booking object
-   * @throws {Error} if the booking is not possible
-   * */
-  public request(
-    travelerId: string,
-    tripId: string,
-    passengersCount: number,
-    cardNumber: string,
-    cardExpiry: string,
-    cardCVC: string,
-    hasPremiumFoods: boolean,
-    extraLuggageKilos: number
-  ): Booking {
-    this.bookingRequest = new BookingRequest(
-      travelerId,
-      tripId,
-      new Passengers(passengersCount),
-      new CreditCard(cardNumber, cardExpiry, cardCVC),
-      hasPremiumFoods,
-      extraLuggageKilos
-    );
+  public execute(bookingRequest: BookingRequest): Booking {
+    this.bookingRequest = bookingRequest;
     this.create();
     const logic = new BookingLogic(this.booking);
     this.saveBooking();

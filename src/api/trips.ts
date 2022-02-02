@@ -4,8 +4,7 @@ import { Booking } from "../models/booking";
 import { Trip, TripKinds, TripStatus } from "../models/trip";
 import { TripsData } from "../repository/tripsData";
 import { DB } from "../tools/bd";
-import { BookingsUpdate } from "./bookingsUpdate";
-
+import { BookingsCancelCommand } from "./bookingsCancel.command";
 /**
  * Class for offering or canceling trips
  * @public
@@ -77,7 +76,7 @@ export class Trips {
   private cancelBookings(tripId: string) {
     const bookings = DB.select<Booking[]>(`SELECT * FROM bookings WHERE tripId = '${tripId}'`);
     bookings.forEach(booking => {
-      new BookingsUpdate().cancel(booking);
+      new BookingsCancelCommand().execute(booking);
     });
   }
 }

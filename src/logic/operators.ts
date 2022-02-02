@@ -1,21 +1,18 @@
-/* eslint-disable max-statements */
-/* eslint-disable max-lines-per-function */
 import { Booking } from "../models/booking";
 import { Trip } from "../models/trip";
-import { GreenOrigin } from "./greenOrigin";
 import { IOperatorAPI } from "./operatorApi.interface";
-import { SpaceY } from "./spacey";
+import { OperatorsApiStrategy } from "./operatorsAPI.strategy";
 
 export class Operators {
-  // 🧼 ✅
-  // 2.2.1..3
-  // OLI
-  // VirginPlanetary added to SpaceY and GreenOrigin as operators
-  // 🧼 ✅
   private operatorAPI: IOperatorAPI;
 
-  constructor(private operatorId: string) {
-    this.operatorAPI = this.getOperatorApi();
+  constructor(operatorId: string) {
+    // 🧼 ✅
+    // 3.2.1
+    // Strategy
+    // Calls the strategy factory to get the operator API
+    // 🧼 ✅
+    this.operatorAPI = OperatorsApiStrategy.getOperatorApi(operatorId);
   }
 
   public verifyAvailability(trip: Trip, passengersCount: number): boolean {
@@ -26,18 +23,5 @@ export class Operators {
   }
   public releaseBooking(booking: Booking): void {
     return this.operatorAPI.releaseBooking(booking);
-  }
-
-  private getOperatorApi() {
-    // 🚨 🤔 🤢
-    // 3.2.1
-    // ! Strategy
-    // ! Change behavior on runtime based on operator
-    // 🚨 🤔 🤢
-    if (this.operatorId === "SpaceY") {
-      return new SpaceY();
-    } else {
-      return new GreenOrigin();
-    }
   }
 }
